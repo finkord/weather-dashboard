@@ -1,5 +1,11 @@
 # WeatherDashboard
 
+```text
+Тема - Weather Dashboard
+Автор 1 - Володимир Фуфалько
+Автор 2 - Вікторія Яківчук
+```
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.5.
 
 ## Development server
