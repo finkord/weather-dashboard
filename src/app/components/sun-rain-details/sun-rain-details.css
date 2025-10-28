@@ -1,0 +1,59 @@
+.sun-details-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e0e0e0;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.card-header h3 {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin: 0;
+}
+.options {
+    font-size: 1.5em;
+    color: #aaa;
+}
+
+.location-block h4 {
+    font-size: 1em;
+    font-weight: bold;
+    color: #3b3f6f;
+    margin: 10px 0;
+}
+
+.times-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.time-item {
+  display: flex;
+  align-items: center;
+}
+.time-item .icon {
+  font-size: 2em;
+  margin-right: 10px;
+}
+.details .label {
+  font-size: 0.8em;
+  color: #888;
+}
+.details .time {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #f0f0f5;
+    margin: 15px 0;
+}

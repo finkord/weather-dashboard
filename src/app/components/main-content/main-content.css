@@ -1,0 +1,20 @@
+.widgets-container {
+    padding-top: 10px;
+}
+
+.bottom-widgets-row {
+    display: flex;
+    gap: 20px; 
+    margin-top: 20px;
+}
+
+.left-column {
+    flex: 2; 
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.right-column {
+    flex: 1; 
+}

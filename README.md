@@ -1,65 +1,78 @@
-# WeatherDashboard
+# ⛈️ Weather Dashboard | Інформаційна панель погоди
 
-```text
-Тема - Weather Dashboard
-Автор 1 - Володимир Фуфалько
-Автор 2 - Вікторія Яківчук
-```
+Цей проєкт є інформаційною панеллю погоди, розробленою на Angular (Standalone Components) та стилізованою за допомогою чистого CSS. Метою є імітація професійного дашборду для відстеження прогнозу, якості повітря та іншої кліматичної інформації.
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.5.
+---
 
-## Development server
+## 👥 Розробники
 
-To start a local development server, run:
+Проєкт розроблено студентами групи **ІПЗ-33**:
 
-```bash
-ng serve
-```
+* **Яківчук Вікторія**
+* **Фуфалько Володимир**
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## 🛠️ Технології
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+* **Frontend Framework:** Angular (Standalone Components)
+* **Мова:** TypeScript
+* **Стилі:** CSS (Модульні стилі для кожного компонента)
+* **Система контролю версій:** Git
 
-```bash
-ng generate component component-name
-```
+---
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 🎯 Архітектура та Функціонал
 
-```bash
-ng generate --help
-```
+### Структура компонентів:
 
-## Building
+Проєкт дотримується модульної структури, розбитої на такі ключові компоненти:
 
-To build the project run:
+* `AppComponent` (Root)
+* `Sidebar` (Навігація та Today Widget)
+* `Header` (Пошук, Час, Профіль)
+* `MainContent` (Область для віджетів)
+    * `SevenDayForecast`
+    * `AirQualityIndex`
+    * `SunRainDetails` (Схід/Захід сонця та Опади)
 
-```bash
-ng build
-```
+### Дані:
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+На етапі розробки використовується **Імітація Back-end (Mock Data)** для забезпечення статичного типізування та динамічного відображення контенту у віджетах.
 
-## Running unit tests
+---
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## 🖼️ Поточний Прогрес
 
-```bash
-ng test
-```
+На цьому етапі успішно реалізовано повний каркас компонентів та основну стилізацію згідно з макетом.
 
-## Running end-to-end tests
+![Скріншот поточного вигляду дашборда.](assets/progress.png)
 
-For end-to-end (e2e) testing, run:
+### Досягнуто:
 
-```bash
-ng e2e
-```
+* Повний **Layout** (Sidebar, Header, Main Content).
+* Стилізація **Sidebar** та **Header** за макетом.
+* Верстка віджетів **Forecast**, **Air Quality Index** та **Sun & Sunset**.
+* Успішно усунуто всі помилки імпорту Standalone-компонентів.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+---
 
-## Additional Resources
+## ▶️ Інструкції для запуску
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+1.  **Клонування репозиторію:**
+    ```bash
+    git clone https://github.com/finkord/weather-dashboard
+    ```
+2.  **Перехід у папку проєкту:**
+    ```bash
+    cd weather-dashboard
+    ```
+3.  **Встановлення залежностей:**
+    ```bash
+    npm install
+    ```
+4.  **Запуск Angular Development Server:**
+    ```bash
+    npx ng serve --open
+    ```
+    Додаток буде доступний у вашому браузері за адресою `http://localhost:4200/`.
