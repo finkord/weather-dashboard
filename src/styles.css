@@ -1,14 +1,7 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f0f0f5;
-}
-
 .weather-dashboard-container {
   display: flex;
   width: 100vw;
   height: 100vh;
-  background-color: white;
   overflow: hidden;
 }
 
@@ -19,4 +12,5 @@ body {
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
+  background-color: #f0f0f5;
 }

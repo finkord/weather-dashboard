@@ -1,11 +1,10 @@
 .sidebar-container {
-  width: 280px;
   background-color: #3b3f6f;
   color: white;
   padding: 20px 0;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
   box-sizing: border-box;
 }
 
@@ -14,45 +13,46 @@
   align-items: center;
   padding: 0 20px 30px;
   font-size: 1.2em;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
-.logo-section .icon {
+.logo-icon {
   font-size: 1.5em;
   margin-right: 10px;
+  width: 1.5em;
+  height: 1.5em;
 }
 
 .nav-section {
-  padding: 20px 0;
+  padding-top: 20px;
   flex-grow: 1;
 }
-.nav-item {
-  display: flex;
-  align-items: center;
-  padding: 12px 20px;
-  text-decoration: none;
+
+.nav-section a[mat-list-item] {
   color: #c0c0e0;
-  margin: 5px 0;
-  transition: background-color 0.2s;
   font-size: 1.1em;
-}
-.nav-item:hover {
-  background-color: #4a4f82;
+  margin: 5px 0;
+  /* padding-left: 20px; */
 }
 
-.nav-item.active {
+.nav-section a[mat-list-item] mat-icon[matListItemIcon] {
+  color: #c0c0e0; /* Колір іконки */
+}
+
+/* Активний елемент (зберігаємо ваш клас .active) */
+.nav-section a[mat-list-item].active {
   background-color: #535787;
   color: white;
   border-left: 4px solid #f99c22;
   font-weight: bold;
 }
-
-.nav-icon {
-  margin-right: 15px;
+.nav-section a[mat-list-item].active mat-icon[matListItemIcon] {
+  color: white;
 }
 
 /* --- Віджет Today --- */
-.today-widget {
+/* Стилізуємо mat-card, щоб він виглядав як ваш віджет */
+mat-card.today-widget {
   background-color: #535787;
+  color: white;
   margin: 20px;
   padding: 20px;
   border-radius: 10px;
@@ -69,17 +69,30 @@
 .main-icon {
   font-size: 3em;
   margin-right: 15px;
+  width: 1em;
+  height: 1em;
 }
 .temperature {
   font-size: 2.5em;
   font-weight: bold;
+  margin: 0;
+}
+.current-time,
+.current-date,
+.location {
+  margin: 5px 0;
 }
 .location {
   font-weight: bold;
   margin-bottom: 15px;
 }
+
+.today-widget mat-divider {
+  border-top-color: rgba(255, 255, 255, 0.2);
+  margin-top: 15px;
+}
+
 .metrics {
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
   padding-top: 15px;
   text-align: left;
 }

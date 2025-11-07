@@ -1,40 +1,53 @@
 <div class="sidebar-container">
   <div class="logo-section">
-    <span class="icon">⛈️</span> 
+    <mat-icon class="logo-icon">storm</mat-icon>
     <h3>Weather News</h3>
   </div>
 
-  <nav class="nav-section">
-    <a href="#" class="nav-item active">
-        <span class="nav-icon">🏠</span> Dashboard
-    </a>
-    <a href="#" class="nav-item">
-        <span class="nav-icon">📈</span> Statistics
-    </a>
-    <a href="#" class="nav-item">
-        <span class="nav-icon">🗺️</span> Map
-    </a>
-    <a href="#" class="nav-item">
-        <span class="nav-icon">📅</span> Calendar
-    </a>
-    <a href="#" class="nav-item">
-        <span class="nav-icon">⚙️</span> Setting
-    </a>
-  </nav>
+  <mat-divider></mat-divider>
 
-  <div class="today-widget">
-    <p class="current-time">11:21 AM</p>
-    <p class="current-date">Mon, 1 January 2023</p>
-    <div class="weather-icon-temp">
-      <span class="main-icon">☁️</span>
-      <p class="temperature">+7°C</p>
-    </div>
-    <p class="location">New York, United States</p>
-    
-    <div class="metrics">
-      <div class="metric">Humidity: <span class="value">80%</span></div>
-      <div class="metric">Precipitation: <span class="value">45%</span></div>
-      <div class="metric">Wind: <span class="value">5.5km/h</span></div>
-    </div>
-  </div>
+  <mat-nav-list class="nav-section">
+    <a mat-list-item href="#" class="active">
+      <mat-icon matListItemIcon>home</mat-icon>
+      <span>Dashboard</span>
+    </a>
+    <a mat-list-item href="#">
+      <mat-icon matListItemIcon>bar_chart</mat-icon>
+      <span>Statistics</span>
+    </a>
+    <a mat-list-item href="#">
+      <mat-icon matListItemIcon>map</mat-icon>
+      <span>Map</span>
+    </a>
+    <a mat-list-item href="#">
+      <mat-icon matListItemIcon>calendar_today</mat-icon>
+      <span>Calendar</span>
+    </a>
+    <a mat-list-item href="#">
+      <mat-icon matListItemIcon>settings</mat-icon>
+      <span>Setting</span>
+    </a>
+  </mat-nav-list>
+
+  <mat-card class="today-widget">
+    <mat-card-content>
+      <p class="current-time">11:21 AM</p>
+      <p class="current-date">Mon, 1 January 2023</p>
+
+      <div class="weather-icon-temp">
+        <mat-icon class="main-icon">cloud</mat-icon>
+        <p class="temperature">+7°C</p>
+      </div>
+
+      <p class="location">New York, United States</p>
+
+      <mat-divider></mat-divider>
+
+      <div class="metrics">
+        <div class="metric">Humidity: <span class="value">80%</span></div>
+        <div class="metric">Precipitation: <span class="value">45%</span></div>
+        <div class="metric">Wind: <span class="value">5.5km/h</span></div>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>
