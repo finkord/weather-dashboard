@@ -5,10 +5,18 @@ import { MainContent } from './components/main-content/main-content';
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
+import { MatSidenavModule } from '@angular/material/sidenav';
+
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, Sidebar, Header, MainContent], 
+  imports: [
+    RouterOutlet, 
+    Sidebar, 
+    Header, 
+    MainContent,
+    MatSidenavModule 
+  ],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

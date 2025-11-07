@@ -1,17 +1,25 @@
-<header class="dashboard-header">
+<mat-toolbar class="dashboard-header" color="primary">
+
     <div class="header-left">
         <div class="time-text">11:21 AM</div>
         <div class="date-text">Mon, 1 January 2023</div>
         <div class="greeting-text">Good Morning, Sritiy!</div>
     </div>
+
+    <span class="spacer"></span>
+
     <div class="header-right">
         <div class="search-box">
-            <span class="search-icon">🔍</span>
+            <mat-icon class="search-icon">search</mat-icon>
             <input type="text" placeholder="Search....">
         </div>
+
         <div class="user-profile">
             <span class="user-name">Razia Sultana Sritiy</span>
-            <div class="avatar">👤</div>
+            <button mat-icon-button class="avatar-button">
+                <mat-icon>account_circle</mat-icon>
+            </button>
         </div>
     </div>
-</header>
+
+</mat-toolbar>

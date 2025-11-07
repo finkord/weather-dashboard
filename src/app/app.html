@@ -1,10 +1,14 @@
-<div class="weather-dashboard-container">
-  <app-sidebar></app-sidebar>
+<mat-sidenav-container class="weather-dashboard-container">
 
-  <div class="main-content-area">
-    <app-header></app-header> 
-    
-    <app-main-content></app-main-content> 
-  </div>
-</div>
+  <mat-sidenav mode="side" opened>
+    <app-sidebar></app-sidebar>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="main-content-area">
+    <app-header></app-header>
+    <app-main-content></app-main-content>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
+
 <router-outlet></router-outlet>
