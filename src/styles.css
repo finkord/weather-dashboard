@@ -1,19 +1,13 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #f0f0f5; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+  background-color: #f0f0f5;
 }
 
 .weather-dashboard-container {
-  display: flex; 
-  width: 1400px;
-  height: 900px;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
   background-color: white;
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }

@@ -1,11 +1,12 @@
-
 .sidebar-container {
-  width: 280px; 
-  background-color: #3b3f6f; 
+  width: 30vw;
+  background-color: #3b3f6f;
   color: white;
   padding: 20px 0;
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  box-sizing: border-box;
 }
 
 .logo-section {
@@ -21,27 +22,27 @@
 }
 
 .nav-section {
-    padding: 20px 0;
-    flex-grow: 1;
+  padding: 20px 0;
+  flex-grow: 1;
 }
 .nav-item {
   display: flex;
   align-items: center;
   padding: 12px 20px;
   text-decoration: none;
-  color: #c0c0e0; 
+  color: #c0c0e0;
   margin: 5px 0;
   transition: background-color 0.2s;
   font-size: 1.1em;
 }
 .nav-item:hover {
-    background-color: #4a4f82;
+  background-color: #4a4f82;
 }
 
 .nav-item.active {
-  background-color: #535787; 
+  background-color: #535787;
   color: white;
-  border-left: 4px solid #f99c22; 
+  border-left: 4px solid #f99c22;
   font-weight: bold;
 }
 
@@ -51,7 +52,7 @@
 
 /* --- Віджет Today --- */
 .today-widget {
-  background-color: #535787; 
+  background-color: #535787;
   margin: 20px;
   padding: 20px;
   border-radius: 10px;
@@ -60,33 +61,33 @@
 }
 
 .weather-icon-temp {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
 }
 .main-icon {
-    font-size: 3em;
-    margin-right: 15px;
+  font-size: 3em;
+  margin-right: 15px;
 }
 .temperature {
-    font-size: 2.5em;
-    font-weight: bold;
+  font-size: 2.5em;
+  font-weight: bold;
 }
 .location {
-    font-weight: bold;
-    margin-bottom: 15px;
+  font-weight: bold;
+  margin-bottom: 15px;
 }
 .metrics {
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    padding-top: 15px;
-    text-align: left;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 15px;
+  text-align: left;
 }
 .metric {
-    margin-bottom: 5px;
-    display: flex;
-    justify-content: space-between;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
 }
 .metric .value {
-    font-weight: bold;
+  font-weight: bold;
 }
