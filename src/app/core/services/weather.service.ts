@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
@@ -8,6 +8,11 @@ import {
   LocationCoords,
 } from '../models/weather.models';
 
+export interface SelectedLocation {
+  name: string;
+  coords: LocationCoords;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -15,6 +20,12 @@ export class WeatherService {
   // Використовуємо сучасний 'inject()' для DI
   private readonly http = inject(HttpClient);
   private readonly apiUrl = environment.weatherApi.baseUrl;
+
+  /**
+   * STATE: Сигнал, що зберігає поточну обрану локацію.
+   * `null` означає, що локація ще не обрана.
+   */
+  public selectedLocation = signal<SelectedLocation | null>(null);
 
   /**
    * Отримує 10-денний прогноз погоди для заданих координат.
@@ -46,4 +57,12 @@ export class WeatherService {
   // У майбутньому ми можемо додати сюди методи:
   // - getCurrentConditions(location: LocationCoords)
   // - getHourlyForecast(location: LocationCoords)
+
+  /**
+   * PUBLIC ACTION: Метод для оновлення обраної локації.
+   * Викликається з `LocationSearchComponent`.
+   */
+  public setSelectedLocation(name: string, location: LocationCoords): void {
+    this.selectedLocation.set({ name: name, coords: location });
+  }
 }
