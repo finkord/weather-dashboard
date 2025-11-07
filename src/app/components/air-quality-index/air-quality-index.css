@@ -1,44 +1,40 @@
-.air-quality-card {
-  background-color: white;
+/* Стилізуємо mat-card */
+mat-card.air-quality-card {
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05) !important;
   border: 1px solid #e0e0e0;
 }
 
-.header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* Використовуємо ::ng-deep для стилізації внутрішніх елементів Material */
+:host ::ng-deep .air-quality-card .mat-mdc-card-header-text {
+  width: 100%; /* Дозволяє subtitle бути під title */
 }
 
-h3 {
-  font-size: 1.2em;
-  font-weight: bold;
-  margin: 0;
+mat-card-subtitle {
+  font-size: 0.9em;
+  color: #888;
+  margin-top: 5px;
+}
+
+.spacer {
+  flex: 1 1 auto;
 }
 
 .refresh-button {
+  /* Стилі для mat-stroked-button */
+  border-color: #f0f0f5;
   background-color: #f0f0f5;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
   color: #3b3f6f;
-  transition: background-color 0.2s;
+  font-weight: bold;
 }
 .refresh-button:hover {
-    background-color: #e0e0e5;
+  background-color: #e0e0e5;
 }
 
-.location-row {
-    margin-top: 5px;
-    font-size: 0.9em;
-    color: #888;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #f0f0f5;
-    margin-bottom: 15px;
+mat-card.air-quality-card mat-divider {
+  margin: 15px 0;
+  border-top-color: #f0f0f5;
 }
 
 /* Якість повітря */
@@ -50,11 +46,14 @@ h3 {
 .quality-icon {
   font-size: 3em;
   margin-right: 15px;
+  color: green; /* Колір іконки */
+  width: 1em;
+  height: 1em;
 }
 .status {
   font-size: 1.5em;
   font-weight: bold;
-  color: green; 
+  color: green;
 }
 .recommendation {
   color: #666;

@@ -1,49 +1,53 @@
-<div class="air-quality-card">
-  <div class="header-row">
-    <h3>Air Quality Index</h3>
-    <button class="refresh-button">Refresh</button>
-  </div>
-  
-  <div class="location-row">
-    <span>Kushtia, Khulna</span>
-  </div>
+<mat-card class="air-quality-card">
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>Air Quality Index</mat-card-title>
+      <mat-card-subtitle>Kushtia, Khulna</mat-card-subtitle>
+    </mat-card-title-group>
+    <span class="spacer"></span>
+    <button mat-stroked-button class="refresh-button">Refresh</button>
+  </mat-card-header>
 
-  <div class="quality-info">
-    <span class="quality-icon">👍</span>
-    <div class="quality-text">
-      <div class="status">Good</div>
-      <div class="recommendation">A Perfect day for a walk!</div>
-    </div>
-  </div>
+  <mat-divider></mat-divider>
 
-  <div class="metrics-row">
-    <div class="metric">
-      <div class="value">7.3</div>
-      <div class="label">PM2</div>
+  <mat-card-content>
+    <div class="quality-info">
+      <mat-icon class="quality-icon">thumb_up</mat-icon>
+      <div class="quality-text">
+        <div class="status">Good</div>
+        <div class="recommendation">A Perfect day for a walk!</div>
+      </div>
     </div>
-    <div class="metric">
-      <div class="value">12.3</div>
-      <div class="label">PM9</div>
+
+    <div class="metrics-row">
+      <div class="metric">
+        <div class="value">7.3</div>
+        <div class="label">PM2</div>
+      </div>
+      <div class="metric">
+        <div class="value">12.3</div>
+        <div class="label">PM9</div>
+      </div>
+      <div class="metric">
+        <div class="value">4.3</div>
+        <div class="label">SO₂</div>
+      </div>
+      <div class="metric">
+        <div class="value">7.3</div>
+        <div class="label">NO₂</div>
+      </div>
+      <div class="metric">
+        <div class="value">7.3</div>
+        <div class="label">O₂</div>
+      </div>
+      <div class="metric">
+        <div class="value">7.3</div>
+        <div class="label">CO</div>
+      </div>
+      <div class="metric">
+        <div class="value">7.3</div>
+        <div class="label">PM12</div>
+      </div>
     </div>
-    <div class="metric">
-      <div class="value">4.3</div>
-      <div class="label">SO₂</div>
-    </div>
-    <div class="metric">
-      <div class="value">7.3</div>
-      <div class="label">NO₂</div>
-    </div>
-    <div class="metric">
-      <div class="value">7.3</div>
-      <div class="label">O₂</div>
-    </div>
-    <div class="metric">
-      <div class="value">7.3</div>
-      <div class="label">CO</div>
-    </div>
-    <div class="metric">
-      <div class="value">7.3</div>
-      <div class="label">PM12</div>
-    </div>
-  </div>
-</div>
+  </mat-card-content>
+</mat-card>

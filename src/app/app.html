@@ -1,11 +1,13 @@
 <mat-sidenav-container class="weather-dashboard-container">
 
-  <mat-sidenav mode="side" opened>
+  <mat-sidenav #sidenav class="app-sidenav" fixedInViewport [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false">
     <app-sidebar></app-sidebar>
   </mat-sidenav>
 
   <mat-sidenav-content class="main-content-area">
-    <app-header></app-header>
+    <app-header [isHandset]="isHandset$ | async" (toggleSidenav)="sidenav.toggle()">
+    </app-header>
     <app-main-content></app-main-content>
   </mat-sidenav-content>
 

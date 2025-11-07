@@ -1,38 +1,52 @@
-.sun-details-card {
+/* :host та mat-card мають бути flex-колонками, щоб 
+   зайняти 100% висоти у правій колонці */
+:host {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+mat-card.sun-details-card {
   background-color: white;
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05) !important;
   border: 1px solid #e0e0e0;
-}
 
-.card-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-.card-header h3 {
-  font-size: 1.2em;
-  font-weight: bold;
-  margin: 0;
-}
-.options {
-    font-size: 1.5em;
-    color: #aaa;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
+mat-card-header.card-header {
+  padding-bottom: 20px;
+}
+mat-card-header .spacer {
+  flex: 1 1 auto;
+}
+
+/* Скидаємо padding для вмісту, щоб він був від краю до краю */
+mat-card.sun-details-card mat-card-content {
+  padding: 0;
+  flex-grow: 1; /* Дозволяє вмісту розтягуватися */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Центруємо вміст, якщо є вільне місце */
+}
+
+.location-block {
+  margin: 15px 0; /* Додаємо відступи зверху/знизу */
+}
 .location-block h4 {
-    font-size: 1em;
-    font-weight: bold;
-    color: #3b3f6f;
-    margin: 10px 0;
+  font-size: 1em;
+  font-weight: bold;
+  color: #3b3f6f;
+  margin: 10px 0;
 }
 
 .times-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 15px;
 }
 
 .time-item {
@@ -42,7 +56,16 @@
 .time-item .icon {
   font-size: 2em;
   margin-right: 10px;
+  width: 1.5em;
+  height: 1.5em;
 }
+.icon.sunrise {
+  color: #f99c22;
+}
+.icon.sunset {
+  color: #535787;
+}
+
 .details .label {
   font-size: 0.8em;
   color: #888;
@@ -52,8 +75,6 @@
   font-weight: bold;
 }
 
-hr {
-    border: none;
-    border-top: 1px solid #f0f0f5;
-    margin: 15px 0;
+mat-card.sun-details-card mat-divider {
+  border-top-color: #f0f0f5;
 }

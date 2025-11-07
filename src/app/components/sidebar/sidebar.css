@@ -1,7 +1,11 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
 .sidebar-container {
   background-color: #3b3f6f;
   color: white;
-  padding: 20px 0;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -11,14 +15,18 @@
 .logo-section {
   display: flex;
   align-items: center;
-  padding: 0 20px 30px;
+  justify-content: center;
   font-size: 1.2em;
 }
 .logo-icon {
   font-size: 1.5em;
   margin-right: 10px;
-  width: 1.5em;
-  height: 1.5em;
+  width: 1em;
+  height: 1em;
+}
+
+.sidebar-container > mat-divider {
+  border-top-color: rgba(255, 255, 255, 0.1);
 }
 
 .nav-section {
@@ -29,8 +37,6 @@
 .nav-section a[mat-list-item] {
   color: #c0c0e0;
   font-size: 1.1em;
-  margin: 5px 0;
-  /* padding-left: 20px; */
 }
 
 .nav-section a[mat-list-item] mat-icon[matListItemIcon] {

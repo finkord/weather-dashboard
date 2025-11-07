@@ -1,20 +1,41 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
 .widgets-container {
-    padding-top: 10px;
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .bottom-widgets-row {
-    display: flex;
-    gap: 20px; 
-    margin-top: 20px;
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+  flex-grow: 1;
 }
 
 .left-column {
-    flex: 2; 
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .right-column {
-    flex: 1; 
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ДОДАНО: Адаптивність для колонок 
+*/
+@media (max-width: 960px) {
+  /* Точка зламу (breakpoint) */
+  .bottom-widgets-row {
+    flex-direction: column; /* Складаємо колонки вертикально */
+  }
 }

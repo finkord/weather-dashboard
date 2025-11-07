@@ -2,52 +2,14 @@
     <h3>Forecast</h3>
 
     <div class="days-row">
-        
-        <div class="day-card today-active">
-            <div class="day-name">Saturday</div>
-            <div class="precipitation">45%</div>
-            <div class="weather-icon">☁️</div>
-            <div class="temperature">+7°C</div>
-        </div>
+        <mat-card *ngFor="let day of forecast" class="day-card" [ngClass]="{ 'today-active': day.active }">
 
-        <div class="day-card">
-            <div class="day-name">Sunday</div>
-            <div class="precipitation">45%</div>
-            <div class="weather-icon">☁️</div>
-            <div class="temperature">+7°C</div>
-        </div>
-        
-        <div class="day-card">
-            <div class="day-name">Monday</div>
-            <div class="precipitation">45%</div>
-            <div class="weather-icon">☀️</div>
-            <div class="temperature">+7°C</div>
-        </div>
-
-        <div class="day-card">
-            <div class="day-name">Tuesday</div>
-            <div class="precipitation">45%</div>
-            <div class="weather-icon">☁️</div>
-            <div class="temperature">+7°C</div>
-        </div>
-        <div class="day-card">
-            <div class="day-name">Wednesday</div>
-            <div class="precipitation">45%</div>
-            <div class="weather-icon">☁️</div>
-            <div class="temperature">+7°C</div>
-        </div>
-        <div class="day-card">
-            <div class="day-name">Thursday</div>
-            <div class="precipitation">45%</div>
-            <div class="weather-icon">☁️</div>
-            <div class="temperature">+7°C</div>
-        </div>
-        <div class="day-card">
-            <div class="day-name">Friday</div>
-            <div class="precipitation">45%</div>
-            <div class="weather-icon">☁️</div>
-            <div class="temperature">+7°C</div>
-        </div>
-        
+            <mat-card-content>
+                <div class="day-name">{{ day.day }}</div>
+                <div class="precipitation">{{ day.precipitation }}%</div>
+                <mat-icon class="weather-icon">{{ day.icon }}</mat-icon>
+                <div class="temperature">{{ day.temp }}</div>
+            </mat-card-content>
+        </mat-card>
     </div>
 </div>

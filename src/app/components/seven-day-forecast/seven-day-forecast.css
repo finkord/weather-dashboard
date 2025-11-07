@@ -1,61 +1,41 @@
 .forecast-container {
-    padding: 10px 0;
+  padding: 10px 0;
 }
 
 h3 {
-    margin-top: 0;
-    margin-bottom: 15px;
-    font-size: 1.2em;
-    font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.2em;
+  font-weight: bold;
 }
 
 .days-row {
-    display: flex;
-    justify-content: space-between; 
-    gap: 15px; 
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
 }
 
-.day-card {
-    flex: 1; 
-    background-color: white;
-    border-radius: 12px;
-    padding: 15px 10px;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    border: 1px solid #e0e0e0;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
+/* ... (інші стилі .day-card) ... */
+mat-card.day-card {
+  flex: 1;
+  padding: 15px 10px;
+  text-align: center;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid #e0e0e0;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
 
-.day-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  /* ДОДАНО: Мінімальна ширина для скролу */
+  min-width: 120px;
 }
+/* ... (решта стилів) ... */
 
-.day-card.today-active {
-    background-color: #3b3f6f; 
-    color: white;
-}
-.day-card.today-active .precipitation {
-    color: #a0a0ff; 
-}
-
-.day-name {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.precipitation {
-    font-size: 0.85em;
-    color: #666; 
-    margin-bottom: 10px;
-}
-
-.weather-icon {
-    font-size: 2em;
-    margin-bottom: 10px;
-}
-
-.temperature {
-    font-size: 1.3em;
-    font-weight: bold;
+/* ДОДАНО: Адаптивність для 7-денного прогнозу 
+*/
+@media (max-width: 960px) {
+  .days-row {
+    overflow-x: auto; /* Додаємо горизонтальний скрол */
+    justify-content: flex-start; /* Вирівнюємо картки по початку */
+  }
 }

@@ -1,5 +1,9 @@
 <mat-toolbar class="dashboard-header" color="primary">
 
+    <button mat-icon-button *ngIf="isHandset" (click)="toggleSidenav.emit()">
+        <mat-icon>menu</mat-icon>
+    </button>
+
     <div class="header-left">
         <div class="time-text">11:21 AM</div>
         <div class="date-text">Mon, 1 January 2023</div>
