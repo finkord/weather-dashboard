@@ -1,0 +1,95 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+// Стилі для станів (prompt, loading, error)
+.forecast-prompt,
+.forecast-loading,
+.forecast-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+  text-align: center;
+  min-height: 200px;
+  color: #666;
+
+  p {
+    font-size: 1.1em;
+    margin-top: 16px;
+  }
+}
+
+.forecast-error {
+  color: #d9534f; // Колір помилки
+  pre {
+    font-size: 0.8em;
+    background: #f9f9f9;
+    padding: 8px;
+    border-radius: 4px;
+    max-width: 100%;
+    overflow-x: auto;
+    text-align: left;
+  }
+}
+
+// Контейнер з результатами
+.forecast-container {
+  h2 {
+    font-weight: 300; // Легший шрифт для заголовка
+    margin-bottom: 24px;
+  }
+}
+
+// ОСНОВНА АДАПТИВНА СІТКА
+.forecast-grid {
+  display: grid;
+  
+  // Це магія:
+  // 1. Створити стільки колонок, скільки вміститься (auto-fill)
+  // 2. Кожна колонка:
+  //    - мінімум 160px (для мобільних)
+  //    - максимум 1fr (рівномірно зайняти простір)
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  
+  // Відстань між картками
+  gap: 16px;
+}
+
+// Стилі для окремої картки
+.forecast-card {
+  text-align: center;
+  
+  .mat-card-header {
+    padding-bottom: 12px;
+  }
+
+  .weather-icon {
+    font-size: 3.5em; // Розмір іконки
+    margin: 16px 0;
+    // Потрібно підключити 'weather-icons' або іншу бібліотеку
+    color: #0d47a1; // Приклад кольору іконки
+  }
+
+  .temperatures {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    font-size: 1.25em;
+    font-weight: 500;
+    margin-bottom: 16px;
+
+    .temp-min {
+      opacity: 0.7; // Мінімальна температура менш виражена
+    }
+  }
+
+  .details {
+    display: flex;
+    justify-content: space-around;
+    font-size: 0.9em;
+    opacity: 0.8;
+  }
+}

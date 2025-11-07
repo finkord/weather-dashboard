@@ -1,24 +1,31 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import {
+  MatAutocompleteModule,
+  MatAutocompleteSelectedEvent,
+} from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { Observable, EMPTY } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
   switchMap,
   tap,
+  filter,
 } from 'rxjs/operators';
-import { PlacesService, PlaceSuggestion } from '../../core/services/places.service';
+import {
+  PlacesService,
+  PlaceSuggestion,
+  PlaceDetails,
+} from '../../core/services/places.service';
 import { WeatherService } from '../../core/services/weather.service';
 
 @Component({
   selector: 'app-location-search',
   standalone: true,
   imports: [
-    // Необхідні імпорти для Standalone-компонента
     CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -30,26 +37,29 @@ import { WeatherService } from '../../core/services/weather.service';
   styleUrls: ['./location-search.component.scss'],
 })
 export class LocationSearchComponent implements OnInit {
-  // Використовуємо inject() для сервісів
   private placesService = inject(PlacesService);
   private weatherService = inject(WeatherService);
 
-  public searchControl = new FormControl('');
+  public searchControl = new FormControl<string | PlaceSuggestion>(''); // Чітко вказуємо тип
   public suggestions$!: Observable<PlaceSuggestion[]>;
 
   ngOnInit(): void {
     this.suggestions$ = this.searchControl.valueChanges.pipe(
-      // Затримка перед запитом
       debounceTime(400),
-      // Не робити запит, якщо значення не змінилося
+      
+      // !!! КЛЮЧОВЕ ВИПРАВЛЕННЯ №3:
+      // Ми реагуємо ТІЛЬКИ на рядки (string), які вводить користувач.
+      // Коли користувач обирає опцію, 'valueChanges' видає ОБ'ЄКТ,
+      // цей 'filter' його проігнорує, що запобіжить NG0955.
+      filter((query): query is string => typeof query === 'string'),
+      
       distinctUntilChanged(),
-      // Робимо запит до API
-      switchMap((query) => {
+      switchMap((query: string) => {
         if (query && query.length > 2) {
+          // 'findCities' тепер 100% повертає PlaceSuggestion[]
           return this.placesService.findCities(query);
         }
-        // Якщо запит короткий, повертаємо порожній масив
-        return EMPTY;
+        return of([]); // Повертаємо порожній масив, щоб очистити список
       })
     );
   }
@@ -58,19 +68,27 @@ export class LocationSearchComponent implements OnInit {
    * Викликається, коли користувач обирає опцію з автодоповнення
    */
   public onOptionSelected(event: MatAutocompleteSelectedEvent): void {
-    const selectedPlaceId = event.option.value;
+    const selectedPlace: PlaceSuggestion = event.option.value;
 
-    // Отримуємо деталі (lat/lng) для обраного місця
+    if (!selectedPlace || !selectedPlace.placeId) {
+      return;
+    }
+
     this.placesService
-      .getPlaceDetails(selectedPlaceId)
+      .getPlaceDetails(selectedPlace.placeId)
       .pipe(
-        // tap для "side effect" - оновлення стану
+        // Перевіряємо, що 'details' не null
+        filter((details): details is PlaceDetails => !!details),
         tap((details) => {
+          // 'details' тепер 100% має тип PlaceDetails.
+          // Помилка TypeError не виникне, і 'setSelectedLocation' буде викликано.
           this.weatherService.setSelectedLocation(
             details.name,
             details.location
           );
-          // Очищуємо поле вводу та показуємо обране місто
+          
+          // Встановлюємо текстове значення в інпут,
+          // і { emitEvent: false } запобігає повторному виклику valueChanges.
           this.searchControl.setValue(details.name, { emitEvent: false });
         })
       )
@@ -81,6 +99,7 @@ export class LocationSearchComponent implements OnInit {
    * Функція для відображення значення в autocomplete
    */
   public displayFn(place: PlaceSuggestion): string {
+    // 'place' - це об'єкт PlaceSuggestion
     return place && place.description ? place.description : '';
   }
 }

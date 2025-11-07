@@ -32,7 +32,7 @@ interface Temperature {
   unit: 'C' | 'F';
 }
 
-interface GoogleDate {
+export interface GoogleDate {
   year: number;
   month: number;
   day: number;
