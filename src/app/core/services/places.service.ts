@@ -4,15 +4,30 @@ import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 
-// (Інтерфейси залишаємо без змін)
-export interface PlaceSuggestion {
+// --- ІНТЕРФЕЙСИ ---
+
+// 1. "Сирий" інтерфейс відповіді Autocomplete (відповідає "Запиту 1")
+export interface GooglePlaceSuggestion {
   description: string;
-  placeId: string;
+  place_id: string; // ВИПРАВЛЕНО: snake_case
+  // ... (інші поля можемо ігнорувати)
 }
 
-export interface PlaceDetails {
+// 2. "Сирий" інтерфейс відповіді Details (відповідає "Запиту 2")
+interface GooglePlaceDetailsResponse {
   name: string;
-  location: {
+  geometry: {
+    location: {
+      lat: number;
+      lng: number;
+    };
+  };
+}
+
+// 3. "Чистий" інтерфейс, який ми хочемо використовувати у додатку
+export interface PlaceLocation {
+  name: string;
+  coords: {
     latitude: number;
     longitude: number;
   };
@@ -26,46 +41,57 @@ export class PlacesService {
   private readonly apiUrl = '/maps/api/place';
 
   /**
-   * Пошук міст за введеним текстом (Autocomplete)
+   * Пошук міст (Autocomplete)
    */
-  public findCities(query: string): Observable<PlaceSuggestion[]> {
+  public findCities(query: string): Observable<GooglePlaceSuggestion[]> {
     const url = `${this.apiUrl}/autocomplete/json`;
     const params = new HttpParams()
       .set('input', query)
       .set('types', '(cities)');
 
     return this.http
-      .get<{ predictions: PlaceSuggestion[] }>(url, { params })
+      .get<{ predictions: GooglePlaceSuggestion[] }>(url, { params })
       .pipe(
-        // !!! КЛЮЧОВЕ ВИПРАВЛЕННЯ №1:
-        // Ми "розпаковуємо" відповідь і повертаємо компоненту
-        // чистий масив [ ... ], а не об'єкт { predictions: ... }.
-        // Це виправить помилку NG0955.
+        // Тепер ми повертаємо масив з 'place_id' (snake_case)
         map((res) => res.predictions),
         catchError((err) => {
           console.error('PlacesService.findCities error:', err);
-          return of([]); // Завжди повертаємо масив
+          return of([]);
         })
       );
   }
 
   /**
-   * Отримання деталей (включаючи lat/lng) для обраного місця
+   * Отримання деталей (lat/lng) та їх ТРАНСФОРМАЦІЯ
    */
-  public getPlaceDetails(placeId: string): Observable<PlaceDetails | null> {
+  public getPlaceDetails(placeId: string): Observable<PlaceLocation | null> {
     const url = `${this.apiUrl}/details/json`;
     const params = new HttpParams()
       .set('place_id', placeId)
       .set('fields', 'name,geometry/location');
 
     return this.http
-      .get<{ result: PlaceDetails; status: string }>(url, { params })
+      .get<{ result: GooglePlaceDetailsResponse; status: string }>(url, {
+        params,
+      })
       .pipe(
-        // !!! КЛЮЧОВЕ ВИПРАВЛЕННЯ №2:
-        // Ми "розпаковуємо" відповідь і повертаємо компоненту
-        // чистий об'єкт { name: ..., location: ... }, а не { result: ... }.
-        // Це виправить TypeError і дозволить погоді оновитися.
-        map((res) => (res.status === 'OK' ? res.result : null)),
+        map((res) => {
+          if (res.status !== 'OK' || !res.result) {
+            return null;
+          }
+
+          // !!! КЛЮЧОВЕ ВИПРАВЛЕННЯ !!!
+          // Трансформуємо "сиру" відповідь API (Запит 2)
+          // у наш чистий інтерфейс 'PlaceLocation'
+          const details: PlaceLocation = {
+            name: res.result.name,
+            coords: {
+              latitude: res.result.geometry.location.lat, // з lat
+              longitude: res.result.geometry.location.lng, // з lng
+            },
+          };
+          return details;
+        }),
         catchError((err) => {
           console.error('PlacesService.getPlaceDetails error:', err);
           return of(null);

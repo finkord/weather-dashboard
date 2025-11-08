@@ -4,5 +4,14 @@
     "secure": true,
     "changeOrigin": true,
     "logLevel": "debug"
+  },
+  "/weather": {
+    "target": "https://weather.googleapis.com",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/weather": ""
+    }
   }
 }

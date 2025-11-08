@@ -9,11 +9,11 @@ export const apiKeyInterceptor: HttpInterceptorFn = (req, next) => {
 
   const weatherApiUrl = environment.weatherApi.baseUrl;
   const placesApiProxyPath = '/maps';
-
+  const weatherApiProxyPath = '/weather';
   // Перевіряємо, чи запит йде до API погоди АБО до нашого проксі-шляху
   if (
-    req.url.startsWith(weatherApiUrl) ||
-    req.url.startsWith(placesApiProxyPath)
+    req.url.startsWith(placesApiProxyPath) ||
+    req.url.startsWith(weatherApiProxyPath)
   ) {
     // Ключ однаковий для обох API
     const apiKey = environment.weatherApi.apiKey;

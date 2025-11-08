@@ -1,7 +1,5 @@
 @if (forecastState$ | async; as state) {
-
 @switch (state.status) {
-
 @case ('initial') {
 <div class="forecast-prompt">
     <p>Будь ласка, оберіть локацію, щоб побачити прогноз.</p>
@@ -30,34 +28,32 @@
     <div class="forecast-grid">
 
         @for (day of state.data; track day.date.day) {
-
         <mat-card class="forecast-card">
             <mat-card-header>
                 <mat-card-title>
                     {{ getJsDate(day.date) | date : 'EEE, d MMM' }}
                 </mat-card-title>
-                <mat-card-subtitle>{{ day.shortDescription }}</mat-card-subtitle>
+                <mat-card-subtitle>{{ day.description }}</mat-card-subtitle>
             </mat-card-header>
 
             <mat-card-content>
-                <i class="weather-icon {{ getWeatherIconClass(day.iconCode) }}"></i>
+                <i class="weather-icon {{ getWeatherIconClass(day.iconType) }}"></i>
 
                 <div class="temperatures">
                     <span class="temp-max">
-                        {{ day.temperatureMax.value | number : '1.0-0' }}°
+                        {{ day.tempMax | number : '1.0-0' }}°
                     </span>
                     <span class="temp-min">
-                        {{ day.temperatureMin.value | number : '1.0-0' }}°
+                        {{ day.tempMin | number : '1.0-0' }}°
                     </span>
                 </div>
 
                 <div class="details">
                     <span>💧 {{ day.precipitationChance }}%</span>
-                    <span>💨 {{ day.windSpeed | number : '1.0-1' }} м/с</span>
+                    <span>💨 {{ day.windSpeed | number : '1.0-1' }} kph</span>
                 </div>
             </mat-card-content>
         </mat-card>
-
         } @empty {
         <p>На жаль, для цієї локації немає даних про прогноз.</p>
         }

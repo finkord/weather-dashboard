@@ -3,7 +3,7 @@
     <input type="text" placeholder="Введіть назву міста" matInput [formControl]="searchControl"
         [matAutocomplete]="auto" />
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayFn">
-        @for (suggestion of suggestions$ | async; track suggestion.placeId) {
+        @for (suggestion of suggestions$ | async; track suggestion.place_id) {
         <mat-option [value]="suggestion">
             {{ suggestion.description }}
         </mat-option>

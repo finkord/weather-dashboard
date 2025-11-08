@@ -17,8 +17,8 @@ import {
 } from 'rxjs/operators';
 import {
   PlacesService,
-  PlaceSuggestion,
-  PlaceDetails,
+  GooglePlaceSuggestion, // <-- ВИПРАВЛЕНО: Використовуємо "сирий" інтерфейс з place_id
+  PlaceLocation, // <-- ВИПРАВЛЕНО: Використовуємо "чистий" інтерфейс
 } from '../../core/services/places.service';
 import { WeatherService } from '../../core/services/weather.service';
 
@@ -40,66 +40,58 @@ export class LocationSearchComponent implements OnInit {
   private placesService = inject(PlacesService);
   private weatherService = inject(WeatherService);
 
-  public searchControl = new FormControl<string | PlaceSuggestion>(''); // Чітко вказуємо тип
-  public suggestions$!: Observable<PlaceSuggestion[]>;
+  // Контрол тепер оперує 'string' або 'GooglePlaceSuggestion'
+  public searchControl = new FormControl<string | GooglePlaceSuggestion>('');
+  public suggestions$!: Observable<GooglePlaceSuggestion[]>;
 
   ngOnInit(): void {
     this.suggestions$ = this.searchControl.valueChanges.pipe(
       debounceTime(400),
-      
-      // !!! КЛЮЧОВЕ ВИПРАВЛЕННЯ №3:
-      // Ми реагуємо ТІЛЬКИ на рядки (string), які вводить користувач.
-      // Коли користувач обирає опцію, 'valueChanges' видає ОБ'ЄКТ,
-      // цей 'filter' його проігнорує, що запобіжить NG0955.
+      // Цей 'filter' все ще важливий, він ігнорує об'єкти
       filter((query): query is string => typeof query === 'string'),
-      
       distinctUntilChanged(),
       switchMap((query: string) => {
         if (query && query.length > 2) {
-          // 'findCities' тепер 100% повертає PlaceSuggestion[]
           return this.placesService.findCities(query);
         }
-        return of([]); // Повертаємо порожній масив, щоб очистити список
+        return of([]);
       })
     );
   }
 
-  /**
-   * Викликається, коли користувач обирає опцію з автодоповнення
-   */
   public onOptionSelected(event: MatAutocompleteSelectedEvent): void {
-    const selectedPlace: PlaceSuggestion = event.option.value;
+    // 'value' - це об'єкт 'GooglePlaceSuggestion' з 'place_id'
+    const selectedPlace: GooglePlaceSuggestion = event.option.value;
 
-    if (!selectedPlace || !selectedPlace.placeId) {
+    if (!selectedPlace || !selectedPlace.place_id) {
       return;
     }
 
     this.placesService
-      .getPlaceDetails(selectedPlace.placeId)
+      .getPlaceDetails(selectedPlace.place_id) // Використовуємо place_id
       .pipe(
-        // Перевіряємо, що 'details' не null
-        filter((details): details is PlaceDetails => !!details),
+        // Сервіс повертає 'PlaceLocation | null'
+        filter((details): details is PlaceLocation => !!details),
         tap((details) => {
-          // 'details' тепер 100% має тип PlaceDetails.
-          // Помилка TypeError не виникне, і 'setSelectedLocation' буде викликано.
+          // 'details' - це наш чистий об'єкт: { name: '...', coords: { latitude: ..., longitude: ... } }
+          
+          // !!! ВИПРАВЛЕНО !!!
+          // 'details.coords' тепер коректно визначений. Помилки не буде.
+          // Погода ОНОВИТЬСЯ.
           this.weatherService.setSelectedLocation(
             details.name,
-            details.location
+            details.coords
           );
-          
-          // Встановлюємо текстове значення в інпут,
-          // і { emitEvent: false } запобігає повторному виклику valueChanges.
+
+          // Встановлюємо в інпут чисту назву міста, а не 'description'
           this.searchControl.setValue(details.name, { emitEvent: false });
         })
       )
       .subscribe();
   }
 
-  /**
-   * Функція для відображення значення в autocomplete
-   */
-  public displayFn(place: PlaceSuggestion): string {
-    // 'place' - це об'єкт PlaceSuggestion
+  public displayFn(place: GooglePlaceSuggestion): string {
+    // Відображаємо 'description'
     return place && place.description ? place.description : '';
   }
 }
