@@ -4,18 +4,14 @@ import { routes } from './app.routes';
 
 // Імпортуємо необхідні функції
 import {
-  provideHttpClient,
-  withInterceptors,
+  provideHttpClient
 } from '@angular/common/http';
-import { apiKeyInterceptor } from './core/interceptors/api-key.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
 
-    // Реєструємо HttpClient з нашим interceptor
-    provideHttpClient(withInterceptors([apiKeyInterceptor])),
-
-    // ...інші providers
+    // Реєструємо HttpClient
+    provideHttpClient(),
   ],
 };
