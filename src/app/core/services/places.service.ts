@@ -1,101 +1,73 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-import { environment } from '../../../environments/environment';
+import { catchError } from 'rxjs/operators';
+// Вам більше не потрібен CacheService тут!
 
 // --- ІНТЕРФЕЙСИ ---
 
-// 1. "Сирий" інтерфейс відповіді Autocomplete (відповідає "Запиту 1")
+// 1. Інтерфейс для відповіді від /api/places/autocomplete
+// (BFF повертає той самий "сирий" список, що і Google)
 export interface GooglePlaceSuggestion {
-  description: string;
-  place_id: string; // ВИПРАВЛЕНО: snake_case
-  // ... (інші поля можемо ігнорувати)
+  description: string;
+  place_id: string; 
 }
 
-// 2. "Сирий" інтерфейс відповіді Details (відповідає "Запиту 2")
-interface GooglePlaceDetailsResponse {
-  name: string;
-  geometry: {
-    location: {
-      lat: number;
-      lng: number;
-    };
-  };
-}
-
-// 3. "Чистий" інтерфейс, який ми хочемо використовувати у додатку
+// 2. "Чистий" інтерфейс, який повертає /api/places/details
+// (BFF вже виконав трансформацію)
 export interface PlaceLocation {
-  name: string;
-  coords: {
-    latitude: number;
-    longitude: number;
-  };
+  name: string;
+  coords: {
+    latitude: number;
+    longitude: number;
+  };
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root',
 })
 export class PlacesService {
-  private http = inject(HttpClient);
-  private readonly apiUrl = '/maps/api/place';
+  private http = inject(HttpClient);
 
-  /**
-   * Пошук міст (Autocomplete)
-   */
-  public findCities(query: string): Observable<GooglePlaceSuggestion[]> {
-    const url = `${this.apiUrl}/autocomplete/json`;
-    const params = new HttpParams()
-      .set('input', query)
-      .set('types', '(cities)');
+  // URL-и наших "розумних" BFF ендпоінтів
+  private readonly autocompleteUrl = '/api/places/autocomplete';
+  private readonly detailsUrl = '/api/places/details';
 
-    return this.http
-      .get<{ predictions: GooglePlaceSuggestion[] }>(url, { params })
-      .pipe(
-        // Тепер ми повертаємо масив з 'place_id' (snake_case)
-        map((res) => res.predictions),
-        catchError((err) => {
-          console.error('PlacesService.findCities error:', err);
-          return of([]);
-        })
-      );
-  }
+  /**
+   * Пошук міст (Autocomplete)
+   * Звертається до BFF, який звертається до Google.
+   */
+  public findCities(query: string): Observable<GooglePlaceSuggestion[]> {
+    const params = new HttpParams().set('q', query);
 
-  /**
-   * Отримання деталей (lat/lng) та їх ТРАНСФОРМАЦІЯ
-   */
-  public getPlaceDetails(placeId: string): Observable<PlaceLocation | null> {
-    const url = `${this.apiUrl}/details/json`;
-    const params = new HttpParams()
-      .set('place_id', placeId)
-      .set('fields', 'name,geometry/location');
+    return this.http
+      // BFF вже повертає чистий масив 'predictions'
+      .get<GooglePlaceSuggestion[]>(this.autocompleteUrl, { params })
+      .pipe(
+        catchError((err) => {
+          console.error('PlacesService.findCities error:', err);
+          return of([]);
+        })
+      );
+  }
 
-    return this.http
-      .get<{ result: GooglePlaceDetailsResponse; status: string }>(url, {
-        params,
-      })
-      .pipe(
-        map((res) => {
-          if (res.status !== 'OK' || !res.result) {
-            return null;
-          }
+  /**
+   * Отримання деталей (lat/lng)
+   * Звертається до BFF, який кешує та трансформує дані.
+   */
+  public getPlaceDetails(placeId: string): Observable<PlaceLocation | null> {
+    
+    // BFF очікує 'placeId'
+    const params = new HttpParams().set('placeId', placeId);
 
-          // !!! КЛЮЧОВЕ ВИПРАВЛЕННЯ !!!
-          // Трансформуємо "сиру" відповідь API (Запит 2)
-          // у наш чистий інтерфейс 'PlaceLocation'
-          const details: PlaceLocation = {
-            name: res.result.name,
-            coords: {
-              latitude: res.result.geometry.location.lat, // з lat
-              longitude: res.result.geometry.location.lng, // з lng
-            },
-          };
-          return details;
-        }),
-        catchError((err) => {
-          console.error('PlacesService.getPlaceDetails error:', err);
-          return of(null);
-        })
-      );
-  }
+    return this.http
+      // BFF вже повертає "чистий" об'єкт PlaceLocation
+      .get<PlaceLocation>(this.detailsUrl, { params })
+      .pipe(
+        catchError((err) => {
+          console.error('PlacesService.getPlaceDetails error:', err);
+          return of(null);
+        })
+      );
+  }
 }

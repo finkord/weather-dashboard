@@ -46,7 +46,7 @@ export class LocationSearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.suggestions$ = this.searchControl.valueChanges.pipe(
-      debounceTime(400),
+      debounceTime(600),
       // Цей 'filter' все ще важливий, він ігнорує об'єкти
       filter((query): query is string => typeof query === 'string'),
       distinctUntilChanged(),
