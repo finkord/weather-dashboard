@@ -44,3 +44,27 @@ main.container {
   margin: 0 auto 24px auto; /* Центрування та відступ знизу */
   max-width: 500px;
 }
+/* Стилі для заголовка */
+.app-header {
+  width: 100%;
+  padding: 16px 0;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* [NEW] Контейнер для вмісту заголовка */
+.app-header-content {
+  display: flex;
+  justify-content: space-between; /* Розділяє елементи (заголовок і годинник) */
+  align-items: center; /* Центрує їх вертикально */
+}
+
+.app-header-content h1 { /* <--- MODIFIED SELECTOR */
+  font-size: 1.5rem; /* 24px */
+  font-weight: 600;
+  color: #1a73e8; /* Використовуємо "фірмовий" синій */
+  margin: 0;
+}
+
+/* ... решта стилів без змін ... */

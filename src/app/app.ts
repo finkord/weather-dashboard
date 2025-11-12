@@ -4,11 +4,12 @@ import { RouterOutlet } from '@angular/router';
 // 1. Імпортуємо наші нові Standalone-компоненти
 import { LocationSearchComponent } from './features/location-search/location-search.component';
 import { WeatherForecastComponent } from './features/weather-forecast/weather-forecast.component';
+import { ClockComponent } from './features/clock/clock.component'; // <--- NEW IMPORT
 
 @Component({
   selector: 'app-root',
-  // 2. Додаємо їх до 'imports', щоб шаблон міг їх "бачити"
-  imports: [RouterOutlet, LocationSearchComponent, WeatherForecastComponent],
+  // 2. Додаємо його до 'imports'
+  imports: [RouterOutlet, LocationSearchComponent, WeatherForecastComponent, ClockComponent], // <--- MODIFIED
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
