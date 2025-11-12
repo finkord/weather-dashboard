@@ -1,0 +1,46 @@
+/* Глобальні налаштування для чистого layout */
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f4f7fa; /* Світлий фон для дашборду */
+}
+
+/* Контейнер, що центрує вміст */
+.container {
+  width: 100%;
+  max-width: 1200px; /* Стандартна максимальна ширина для десктопу */
+  margin: 0 auto;
+  padding: 0 16px; /* Відступи безпеки для мобільних пристроїв */
+  box-sizing: border-box;
+}
+
+/* Стилі для заголовка */
+.app-header {
+  width: 100%;
+  padding: 16px 0;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.app-header h1 {
+  font-size: 1.5rem; /* 24px */
+  font-weight: 600;
+  color: #1a73e8; /* Використовуємо "фірмовий" синій */
+  margin: 0;
+}
+
+/* Головний вміст */
+main.container {
+  padding-top: 24px;
+  padding-bottom: 24px;
+  flex-grow: 1; /* Змушує 'main' займати весь доступний простір */
+}
+
+/* Це змусить наш 'app-location-search' бути по центру */
+::ng-deep app-location-search {
+  display: block;
+  margin: 0 auto 24px auto; /* Центрування та відступ знизу */
+  max-width: 500px;
+}

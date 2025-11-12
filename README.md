@@ -1,65 +1,105 @@
-# WeatherDashboard
+# Weather Dashboard
+
+A modern weather dashboard application built with Angular that provides weather forecasts and location-based weather information.
+
+## Authors
+
+- Володимир Фуфалько
+- Вікторія Яківчук
+
+![preview](public/preview.png)
+
+## Description
+
+Weather Dashboard is a web application that allows users to:
+
+- Search for locations
+- View current weather conditions
+- Check weather forecasts
+- Track weather information for multiple locations
+
+## Technologies
+
+- Angular 20.3.0
+- Angular Material 20.2.12
+- RxJS 7.8.0
+- TypeScript 5.9.2
+
+## Project Structure
 
 ```text
-Тема - Weather Dashboard
-Автор 1 - Володимир Фуфалько
-Автор 2 - Вікторія Яківчук
+src/
+├── app/
+│   ├── core/
+│   │   ├── interceptors/     # HTTP interceptors for API key handling
+│   │   ├── models/          # Data models and interfaces
+│   │   └── services/        # Core services for weather and places
+│   └── features/
+│       ├── location-search/  # Location search functionality
+│       └── weather-forecast/ # Weather forecast display
+└── environments/            # Environment configuration files
 ```
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.5.
+## Getting Started
 
-## Development server
+### Prerequisites
 
-To start a local development server, run:
+- Node.js (Latest LTS version recommended)
+- npm (comes with Node.js)
 
-```bash
-ng serve
-```
+### Installation
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+1. Clone the repository:
 
-## Code scaffolding
+    ```bash
+    git clone https://github.com/finkord/weather-dashboard.git
+    ```
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+2. Navigate to the project directory:
 
-```bash
-ng generate component component-name
-```
+    ```bash
+    cd weather-dashboard
+    ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+3. Install dependencies:
 
-```bash
-ng generate --help
-```
+    ```bash
+    npm install
+    ```
 
-## Building
+4. Set up environment variables:
+   - Copy `environment.example.ts` to `environment.ts`
+   - Update with your API keys and configuration
 
-To build the project run:
+### Development Server
 
-```bash
-ng build
-```
+Run `npm start` or `ng serve` for a development server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### Building the Project
 
-## Running unit tests
+Run `npm run build` or `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+### Running Tests
 
-```bash
-ng test
-```
+Run `npm test` or `ng test` to execute the unit tests via Karma.
 
-## Running end-to-end tests
+## Features
 
-For end-to-end (e2e) testing, run:
+- Location-based weather search
+- Current weather conditions display
+- Weather forecast visualization
+- Responsive design using Angular Material
+- API key protection using HTTP interceptors
 
-```bash
-ng e2e
-```
+## License
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+This project is private and not licensed for public use.
 
-## Additional Resources
+## Technical Details
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- Built with Angular CLI version 20.3.5
+- Uses Angular Material for UI components
+- Implements RxJS for reactive programming
+- Follows Angular best practices and coding standards
+- Includes HTTP interceptors for API authentication
+- Configured with TypeScript strict mode
