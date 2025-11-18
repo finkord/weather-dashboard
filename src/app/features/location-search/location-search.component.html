@@ -1,4 +1,5 @@
-<mat-form-field class="location-search-field">
+<mat-form-field class="location-search-field" appearance="outline">
+    <mat-icon matPrefix>search</mat-icon>
     <mat-label>Пошук міста...</mat-label>
     <input type="text" placeholder="Введіть назву міста" matInput [formControl]="searchControl"
         [matAutocomplete]="auto" />

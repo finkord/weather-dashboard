@@ -3,15 +3,18 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #f4f7fa; /* Світлий фон для дашборду */
+
+  background-color: var(--mat-sys-surface-container);
+
+  color: var(--mat-sys-on-surface);
 }
 
 /* Контейнер, що центрує вміст */
 .container {
   width: 100%;
-  max-width: 1200px; /* Стандартна максимальна ширина для десктопу */
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 16px; /* Відступи безпеки для мобільних пристроїв */
+  padding: 0 16px;
   box-sizing: border-box;
 }
 
@@ -19,52 +22,40 @@
 .app-header {
   width: 100%;
   padding: 16px 0;
-  background-color: #ffffff;
-  border-bottom: 1px solid #e0e0e0;
+
+  background-color: var(--mat-sys-surface);
+
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+
+  /* Тінь можна залишити, вона зазвичай виглядає ок в обох режимах, 
+     але можна зробити прозорішою */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.app-header h1 {
-  font-size: 1.5rem; /* 24px */
+/* Контейнер для вмісту заголовка */
+.app-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app-header-content h1 {
+  font-size: 1.5rem;
   font-weight: 600;
-  color: #1a73e8; /* Використовуємо "фірмовий" синій */
+
+  color: var(--mat-sys-primary);
+
   margin: 0;
 }
 
-/* Головний вміст */
 main.container {
   padding-top: 24px;
   padding-bottom: 24px;
-  flex-grow: 1; /* Змушує 'main' займати весь доступний простір */
+  flex-grow: 1;
 }
 
-/* Це змусить наш 'app-location-search' бути по центру */
 ::ng-deep app-location-search {
   display: block;
-  margin: 0 auto 24px auto; /* Центрування та відступ знизу */
+  margin: 0 auto 24px auto;
   max-width: 500px;
 }
-/* Стилі для заголовка */
-.app-header {
-  width: 100%;
-  padding: 16px 0;
-  background-color: #ffffff;
-  border-bottom: 1px solid #e0e0e0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-/* [NEW] Контейнер для вмісту заголовка */
-.app-header-content {
-  display: flex;
-  justify-content: space-between; /* Розділяє елементи (заголовок і годинник) */
-  align-items: center; /* Центрує їх вертикально */
-}
-
-.app-header-content h1 { /* <--- MODIFIED SELECTOR */
-  font-size: 1.5rem; /* 24px */
-  font-weight: 600;
-  color: #1a73e8; /* Використовуємо "фірмовий" синій */
-  margin: 0;
-}
-
-/* ... решта стилів без змін ... */

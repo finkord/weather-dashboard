@@ -7,6 +7,7 @@ import {
 } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { Observable, of } from 'rxjs';
 import {
   debounceTime,
@@ -17,8 +18,8 @@ import {
 } from 'rxjs/operators';
 import {
   PlacesService,
-  GooglePlaceSuggestion, // <-- ВИПРАВЛЕНО: Використовуємо "сирий" інтерфейс з place_id
-  PlaceLocation, // <-- ВИПРАВЛЕНО: Використовуємо "чистий" інтерфейс
+  GooglePlaceSuggestion,
+  PlaceLocation, 
 } from '../../core/services/places.service';
 import { WeatherService } from '../../core/services/weather.service';
 
@@ -32,6 +33,7 @@ import { WeatherService } from '../../core/services/weather.service';
     MatInputModule,
     MatAutocompleteModule,
     AsyncPipe,
+    MatIconModule,
   ],
   templateUrl: './location-search.component.html',
   styleUrls: ['./location-search.component.scss'],

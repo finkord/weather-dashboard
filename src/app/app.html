@@ -1,12 +1,18 @@
 <header class="app-header">
-  <div class="container app-header-content"> <h1>{{ title() }}</h1>
-    <app-clock></app-clock> </div>
+  <div class="container app-header-content">
+    <h1>{{ title() }}</h1>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <app-clock></app-clock>
+      <app-theme-toggle></app-theme-toggle>
+    </div>
+  </div>
 </header>
 
 <main class="container">
   <app-location-search></app-location-search>
 
   <app-weather-forecast></app-weather-forecast>
+
 </main>
 
 <router-outlet />
