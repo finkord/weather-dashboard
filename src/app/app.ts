@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { MatSidenavModule } from '@angular/material/sidenav'; // Важливо для mat-drawer
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -9,6 +9,7 @@ import { WeatherForecastComponent } from './features/weather-forecast/weather-fo
 import { ClockComponent } from './features/clock/clock.component';
 import { ThemeToggleComponent } from './features/theme-toggle/theme-toggle.component';
 import { BookmarksListComponent } from './features/bookmarks/bookmarks-list.component';
+import { AboutComponent } from './features/about/about.component'; // Імпорт
 
 @Component({
   selector: 'app-root',
@@ -22,7 +23,8 @@ import { BookmarksListComponent } from './features/bookmarks/bookmarks-list.comp
     WeatherForecastComponent,
     ClockComponent,
     ThemeToggleComponent,
-    BookmarksListComponent 
+    BookmarksListComponent,
+    AboutComponent 
   ],
   templateUrl: './app.html',
   styleUrl: './app.css',
