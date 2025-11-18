@@ -1,26 +1,14 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import {
-  MatAutocompleteModule,
-  MatAutocompleteSelectedEvent,
-} from '@angular/material/autocomplete';
+import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { Observable, of } from 'rxjs';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  switchMap,
-  tap,
-  filter,
-} from 'rxjs/operators';
-import {
-  PlacesService,
-  GooglePlaceSuggestion,
-  PlaceLocation, 
-} from '../../core/services/places.service';
+import { debounceTime, distinctUntilChanged, switchMap, tap, filter } from 'rxjs/operators';
+import { PlacesService, GooglePlaceSuggestion, PlaceLocation } from '../../core/services/places.service';
 import { WeatherService } from '../../core/services/weather.service';
 
 @Component({
@@ -34,6 +22,7 @@ import { WeatherService } from '../../core/services/weather.service';
     MatAutocompleteModule,
     AsyncPipe,
     MatIconModule,
+    MatButtonModule,
   ],
   templateUrl: './location-search.component.html',
   styleUrls: ['./location-search.component.scss'],
@@ -42,14 +31,14 @@ export class LocationSearchComponent implements OnInit {
   private placesService = inject(PlacesService);
   private weatherService = inject(WeatherService);
 
-  // Контрол тепер оперує 'string' або 'GooglePlaceSuggestion'
   public searchControl = new FormControl<string | GooglePlaceSuggestion>('');
   public suggestions$!: Observable<GooglePlaceSuggestion[]>;
+  
+  public isLocating = signal(false);
 
   ngOnInit(): void {
     this.suggestions$ = this.searchControl.valueChanges.pipe(
       debounceTime(600),
-      // Цей 'filter' все ще важливий, він ігнорує об'єкти
       filter((query): query is string => typeof query === 'string'),
       distinctUntilChanged(),
       switchMap((query: string) => {
@@ -62,7 +51,6 @@ export class LocationSearchComponent implements OnInit {
   }
 
   public onOptionSelected(event: MatAutocompleteSelectedEvent): void {
-    // 'value' - це об'єкт 'GooglePlaceSuggestion' з 'place_id'
     const selectedPlace: GooglePlaceSuggestion = event.option.value;
 
     if (!selectedPlace || !selectedPlace.place_id) {
@@ -70,22 +58,14 @@ export class LocationSearchComponent implements OnInit {
     }
 
     this.placesService
-      .getPlaceDetails(selectedPlace.place_id) // Використовуємо place_id
+      .getPlaceDetails(selectedPlace.place_id)
       .pipe(
-        // Сервіс повертає 'PlaceLocation | null'
         filter((details): details is PlaceLocation => !!details),
         tap((details) => {
-          // 'details' - це наш чистий об'єкт: { name: '...', coords: { latitude: ..., longitude: ... } }
-          
-          // !!! ВИПРАВЛЕНО !!!
-          // 'details.coords' тепер коректно визначений. Помилки не буде.
-          // Погода ОНОВИТЬСЯ.
           this.weatherService.setSelectedLocation(
             details.name,
             details.coords
           );
-
-          // Встановлюємо в інпут чисту назву міста, а не 'description'
           this.searchControl.setValue(details.name, { emitEvent: false });
         })
       )
@@ -93,7 +73,49 @@ export class LocationSearchComponent implements OnInit {
   }
 
   public displayFn(place: GooglePlaceSuggestion): string {
-    // Відображаємо 'description'
     return place && place.description ? place.description : '';
+  }
+
+  // --- ГЕОЛОКАЦІЯ ---
+  public useCurrentLocation(): void {
+    if (!navigator.geolocation) {
+      console.error('Geolocation is not supported');
+      return;
+    }
+
+    this.isLocating.set(true);
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        const coords = { latitude: lat, longitude: lon };
+
+        // Запитуємо назву міста у нашого BFF
+        this.placesService.getCityNameByCoords(lat, lon).subscribe({
+          next: (cityName) => {
+            // Формуємо красиву назву
+            const displayName = cityName ? `Your Location (${cityName})` : 'Your Location';
+
+            // Оновлюємо погоду і текст в полі
+            this.weatherService.setSelectedLocation(displayName, coords);
+            this.searchControl.setValue(displayName, { emitEvent: false });
+            
+            this.isLocating.set(false);
+          },
+          error: () => {
+            // Якщо щось пішло не так, просто пишемо "Your Location"
+            this.weatherService.setSelectedLocation('Your Location', coords);
+            this.searchControl.setValue('Your Location', { emitEvent: false });
+            this.isLocating.set(false);
+          }
+        });
+      },
+      (error) => {
+        console.error('Error getting location:', error);
+        this.isLocating.set(false);
+      },
+      { timeout: 10000 }
+    );
   }
 }
