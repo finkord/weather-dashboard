@@ -3,7 +3,7 @@
   width: 100%;
 }
 
-// Стилі для станів (prompt, loading, error)
+// --- ЗАГАЛЬНІ СТАНИ ---
 .forecast-prompt,
 .forecast-loading,
 .forecast-error {
@@ -14,82 +14,290 @@
   padding: 40px 16px;
   text-align: center;
   min-height: 200px;
-  color: #666;
+  color: var(--mat-sys-on-surface-variant);
 
   p {
-    font-size: 1.1em;
-    margin-top: 16px;
+    margin-top: 12px;
+    font-size: 1rem;
+  }
+
+  .prompt-icon {
+    font-size: 40px;
+    width: 40px;
+    height: 40px;
+    opacity: 0.5;
   }
 }
 
-.forecast-error {
-  color: #d9534f; // Колір помилки
-  pre {
-    font-size: 0.8em;
-    background: #f9f9f9;
-    padding: 8px;
-    border-radius: 4px;
-    max-width: 100%;
-    overflow-x: auto;
-    text-align: left;
-  }
-}
-
-// Контейнер з результатами
 .forecast-container {
+  animation: fadeIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  padding-bottom: 24px;
+  
   h2 {
-    font-weight: 300; // Легший шрифт для заголовка
-    margin-bottom: 24px;
+    margin: 0 0 16px 0;
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: var(--mat-sys-on-surface);
   }
 }
 
-// ОСНОВНА АДАПТИВНА СІТКА
-.forecast-grid {
-  display: grid;
-  
-  // Це магія:
-  // 1. Створити стільки колонок, скільки вміститься (auto-fill)
-  // 2. Кожна колонка:
-  //    - мінімум 160px (для мобільних)
-  //    - максимум 1fr (рівномірно зайняти простір)
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  
-  // Відстань між картками
-  gap: 16px;
-}
+// --- ГОЛОВНА КАРТКА ---
+.current-weather-card {
+  background-color: var(--mat-sys-surface-container); 
+  color: var(--mat-sys-on-surface);
+  border-radius: 20px;
+  border: 1px solid var(--mat-sys-outline-variant);
+  box-shadow: var(--mat-sys-level1);
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
 
-// Стилі для окремої картки
-.forecast-card {
-  text-align: center;
-  
-  .mat-card-header {
-    padding-bottom: 12px;
+  // Смужка зверху в колір теми
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--mat-sys-primary);
+    opacity: 0.8;
   }
-
-  .weather-icon {
-    font-size: 3.5em; // Розмір іконки
-    margin: 16px 0;
-    // Потрібно підключити 'weather-icons' або іншу бібліотеку
-    color: #0d47a1; // Приклад кольору іконки
-  }
-
-  .temperatures {
+  
+  .current-main {
     display: flex;
-    justify-content: center;
-    gap: 12px;
-    font-size: 1.25em;
-    font-weight: 500;
-    margin-bottom: 16px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px; 
 
-    .temp-min {
-      opacity: 0.7; // Мінімальна температура менш виражена
+    .current-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .today-label {
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--mat-sys-primary);
+      margin-bottom: 4px;
+    }
+
+    .temperature-large {
+      font-size: 4rem;
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: -2px;
+      margin-left: -2px;
+      color: var(--mat-sys-on-surface);
+    }
+
+    .condition-text {
+      font-size: 1.2rem;
+      font-weight: 400;
+      margin-top: 4px;
+      opacity: 0.9;
+    }
+
+    .weather-icon-large {
+      width: 80px;
+      height: 80px;
+      font-size: 80px;
+      color: var(--mat-sys-primary);
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
     }
   }
 
-  .details {
+  mat-divider {
+    border-color: var(--mat-sys-outline-variant);
+  }
+
+  .current-details {
     display: flex;
     justify-content: space-around;
-    font-size: 0.9em;
+    padding: 12px 0 12px;
+    background-color: var(--mat-sys-surface-container-high);
+    
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--mat-sys-on-surface-variant);
+      
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        color: var(--mat-sys-secondary);
+      }
+    }
+  }
+}
+
+// --- ЗАГОЛОВОК ТА ПАГІНАЦІЯ ---
+.grid-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+
+  h3 {
+    margin: 0;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
     opacity: 0.8;
+    color: var(--mat-sys-on-surface);
+  }
+
+  .pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    
+    button[mat-icon-button] {
+        width: 32px;
+        height: 32px;
+        padding: 4px;
+        color: var(--mat-sys-primary);
+        
+        &:disabled {
+            color: var(--mat-sys-outline);
+            opacity: 0.5;
+        }
+        
+        mat-icon {
+            font-size: 22px;
+        }
+    }
+
+    .page-indicator {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--mat-sys-on-surface);
+      min-width: 30px;
+      text-align: center;
+    }
+  }
+}
+
+// --- СІТКА ---
+.forecast-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.forecast-mini-card {
+  text-align: center;
+  padding: 12px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  border-radius: 12px;
+  
+  background-color: var(--mat-sys-surface-container-low); 
+  color: var(--mat-sys-on-surface);
+  border: 1px solid transparent;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-3px);
+    background-color: var(--mat-sys-surface-container-high);
+    border-color: var(--mat-sys-outline);
+    box-shadow: var(--mat-sys-level2);
+  }
+
+  &.selected {
+    // Яскравий акцент для вибраної картки
+    background-color: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
+    border-color: var(--mat-sys-primary);
+    box-shadow: var(--mat-sys-level3);
+    
+    .weather-icon-small {
+        color: var(--mat-sys-on-primary-container); 
+    }
+    
+    .day-name {
+        font-weight: 700;
+        opacity: 1;
+    }
+  }
+
+  .day-name {
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    opacity: 0.8;
+  }
+
+  .weather-icon-small {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+    margin: 4px 0;
+    color: var(--mat-sys-tertiary); 
+  }
+
+  .temp-range {
+    font-size: 0.9rem;
+    display: flex;
+    gap: 6px;
+    
+    .max { font-weight: 600; }
+    .min { opacity: 0.7; font-size: 0.9em; }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .current-weather-card .current-main {
+    flex-direction: column-reverse;
+    text-align: center;
+    padding: 16px;
+    
+    .weather-icon-large {
+      margin-bottom: 12px;
+      width: 64px;
+      height: 64px;
+      font-size: 64px;
+    }
+
+    .temperature-large {
+        font-size: 3.5rem;
+        margin-left: 0;
+    }
+  }
+  
+  .current-details {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    padding-bottom: 16px;
+  }
+
+  .forecast-grid {
+     gap: 6px;
+  }
+  
+  .forecast-mini-card {
+    padding: 10px 2px;
+    
+    .weather-icon-small {
+        width: 28px; height: 28px; font-size: 28px;
+    }
   }
 }

@@ -1,64 +1,119 @@
 @if (forecastState$ | async; as state) {
-@switch (state.status) {
-@case ('initial') {
-<div class="forecast-prompt">
-    <p>Будь ласка, оберіть локацію, щоб побачити прогноз.</p>
-</div>
-}
+  @switch (state.status) {
+    @case ('initial') {
+      <div class="forecast-prompt">
+        <mat-icon class="prompt-icon">location_on</mat-icon>
+        <p>Please select a city to view the forecast</p>
+      </div>
+    }
 
-@case ('loading') {
-<div class="forecast-loading">
-    <mat-spinner diameter="50"></mat-spinner>
-    <p>Завантажуємо прогноз...</p>
-</div>
-}
+    @case ('loading') {
+      <div class="forecast-loading">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Loading data...</p>
+      </div>
+    }
 
-@case ('error') {
-<div class="forecast-error">
-    <h3>Помилка завантаження</h3>
-    <p>Не вдалося отримати прогноз. Будь ласка, спробуйте ще раз.</p>
-    <pre>{{ state.error | json }}</pre>
-</div>
-}
+    @case ('error') {
+      <div class="forecast-error">
+        <mat-icon color="warn">error_outline</mat-icon>
+        <p>Failed to load weather data</p>
+        <pre>{{ state.error | json }}</pre>
+      </div>
+    }
 
-@case ('success') {
-<div class="forecast-container">
-    <h2>Прогноз на 10 днів для {{ selectedLocationName() }}</h2>
+    @case ('success') {
+      @if (state.data && state.data.length > 0) {
+        <div class="forecast-container">
+          <h2>Forecast for {{ selectedLocationName() }}</h2>
 
-    <div class="forecast-grid">
-
-        @for (day of state.data; track day.date.day) {
-        <mat-card class="forecast-card">
-            <mat-card-header>
-                <mat-card-title>
-                    {{ getJsDate(day.date) | date : 'EEE, d MMM' }}
-                </mat-card-title>
-                <mat-card-subtitle>{{ day.description }}</mat-card-subtitle>
-            </mat-card-header>
-
-            <mat-card-content>
-                <i class="weather-icon {{ getWeatherIconClass(day.iconType) }}"></i>
-
-                <div class="temperatures">
-                    <span class="temp-max">
-                        {{ day.tempMax | number : '1.0-0' }}°
+          @if (selectedForecastDay(); as current) {
+            <mat-card class="current-weather-card">
+              <mat-card-content>
+                <div class="current-main">
+                  <div class="current-info">
+                    <span class="today-label">
+                        {{ isSelected(state.data[0]) ? 'TODAY' : 'FORECAST FOR' }},
+                        {{ getJsDate(current.date) | date:'MMMM d' }}
                     </span>
-                    <span class="temp-min">
-                        {{ day.tempMin | number : '1.0-0' }}°
-                    </span>
+                    
+                    <div class="temperature-large">
+                      {{ current.tempMax | number:'1.0-0' }}°
+                    </div>
+                    <div class="condition-text">{{ current.description }}</div>
+                  </div>
+                  
+                  <mat-icon class="weather-icon-large">
+                    {{ current.iconType | weatherIcon }}
+                  </mat-icon>
                 </div>
 
-                <div class="details">
-                    <span>💧 {{ day.precipitationChance }}%</span>
-                    <span>💨 {{ day.windSpeed | number : '1.0-1' }} kph</span>
+                <mat-divider></mat-divider>
+
+                <div class="current-details">
+                  <div class="detail-item">
+                    <mat-icon>water_drop</mat-icon>
+                    <span>Precipitation: {{ current.precipitationChance }}%</span>
+                  </div>
+                  <div class="detail-item">
+                    <mat-icon>air</mat-icon>
+                    <span>Wind: {{ current.windSpeed | number:'1.0-1' }} kph</span>
+                  </div>
+                  <div class="detail-item">
+                    <mat-icon>thermostat</mat-icon>
+                    <span>Min: {{ current.tempMin | number:'1.0-0' }}°</span>
+                  </div>
                 </div>
-            </mat-card-content>
-        </mat-card>
-        } @empty {
-        <p>На жаль, для цієї локації немає даних про прогноз.</p>
-        }
-    </div>
-</div>
-}
-}
+              </mat-card-content>
+            </mat-card>
+          }
+          
+          <div class="grid-header">
+            <h3>Select a Day ({{ state.data.length }} Days)</h3>
+            
+            <div class="pagination-controls">
+              <button mat-icon-button (click)="prevPage()" [disabled]="currentPage() === 0">
+                <mat-icon>chevron_left</mat-icon>
+              </button>
+              
+              <span class="page-indicator">
+                {{ currentPage() + 1 }} / {{ state.data.length / pageSize }}
+              </span>
+              
+              <button mat-icon-button (click)="nextPage(state.data.length)" [disabled]="(currentPage() + 1) * pageSize >= state.data.length">
+                <mat-icon>chevron_right</mat-icon>
+              </button>
+            </div>
+          </div>
+          
+          <div class="forecast-grid">
+            @for (day of state.data | slice:(currentPage() * pageSize):((currentPage() + 1) * pageSize); track day.date.day) {
+              <mat-card 
+                class="forecast-mini-card"
+                [class.selected]="isSelected(day)"
+                (click)="selectDay(day)"
+              >
+                <div class="day-name">
+                    {{ 
+                      (day.date.day === state.data[0].date.day && day.date.month === state.data[0].date.month) 
+                      ? 'Today' 
+                      : (getJsDate(day.date) | date:'EEE') 
+                    }}
+                </div>
+                
+                <mat-icon class="weather-icon-small">
+                  {{ day.iconType | weatherIcon }}
+                </mat-icon>
+
+                <div class="temp-range">
+                  <span class="max">{{ day.tempMax | number:'1.0-0' }}°</span>
+                  <span class="min">{{ day.tempMin | number:'1.0-0' }}°</span>
+                </div>
+              </mat-card>
+            }
+          </div>
+        </div>
+      }
+    }
+  }
 }
