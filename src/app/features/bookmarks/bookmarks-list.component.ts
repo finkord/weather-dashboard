@@ -17,14 +17,15 @@ import { WeatherService } from '../../core/services/weather.service';
     MatButtonModule,
     MatDividerModule
   ],
-  templateUrl: './bookmarks-list.component.html', // Використовуємо зовнішній файл
-  styleUrls: ['./bookmarks-list.component.scss']  // Використовуємо зовнішній файл
+  templateUrl: './bookmarks-list.component.html', 
+  styleUrls: ['./bookmarks-list.component.scss']  
 })
 export class BookmarksListComponent {
   public bookmarksService = inject(BookmarksService);
   private weatherService = inject(WeatherService);
   
   public locationSelected = output<void>();
+
   public close = output<void>();
 
   public selectLocation(bookmark: Bookmark): void {

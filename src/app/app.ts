@@ -9,7 +9,7 @@ import { WeatherForecastComponent } from './features/weather-forecast/weather-fo
 import { ClockComponent } from './features/clock/clock.component';
 import { ThemeToggleComponent } from './features/theme-toggle/theme-toggle.component';
 import { BookmarksListComponent } from './features/bookmarks/bookmarks-list.component';
-import { AboutComponent } from './features/about/about.component'; // Імпорт
+import { AboutComponent } from './features/about/about.component'; 
 
 @Component({
   selector: 'app-root',

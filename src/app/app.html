@@ -1,26 +1,24 @@
 <mat-drawer-container class="app-container" autosize>
-  
+
   <mat-drawer #aboutDrawer mode="over" position="end" class="app-sidebar">
     <app-about (close)="aboutDrawer.close()"></app-about>
   </mat-drawer>
 
   <mat-drawer #bookmarksDrawer mode="over" position="end" class="app-sidebar">
-    <app-bookmarks-list 
-      (locationSelected)="bookmarksDrawer.close()" 
-      (close)="bookmarksDrawer.close()">
+    <app-bookmarks-list (locationSelected)="bookmarksDrawer.close()" (close)="bookmarksDrawer.close()">
     </app-bookmarks-list>
   </mat-drawer>
 
   <mat-drawer-content>
-    
+
     <header class="app-header">
       <div class="container app-header-content">
         <h1>{{ title() }}</h1>
-        
+
         <div style="display: flex; align-items: center; gap: 8px;">
           <app-clock></app-clock>
           <app-theme-toggle></app-theme-toggle>
-          
+
           <button mat-icon-button (click)="aboutDrawer.toggle()" aria-label="About">
             <mat-icon>info</mat-icon>
           </button>
@@ -38,7 +36,7 @@
     </main>
 
     <router-outlet />
-    
+
   </mat-drawer-content>
 
 </mat-drawer-container>
