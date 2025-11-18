@@ -1,43 +1,76 @@
-# Weather Dashboard
+# Weather Dashboard 2.0
 
-A modern weather dashboard application built with Angular that provides weather forecasts and location-based weather information.
+A production-ready, responsive weather application engineered with **Angular 20** and a **Node.js BFF (Backend-for-Frontend)** architecture.
 
-## Authors
+![Main Dashboard](public/preview.png)
 
-- Володимир Фуфалько
-- Вікторія Яківчук
+##  Team
+- Volodymyr Fufalko - Full Stack Developer
+- Viktoriia Yakivchuk - Frontend Developer
 
-![preview](public/preview.png)
+##  Key Features
 
-## Description
+- **Modern Angular Architecture**: Built with the latest **Signals API**, **Control Flow** syntax (`@if`, `@for`), and Standalone Components.
+- **Secure BFF Layer**: A Node.js/Express intermediate server handles external API calls, securely hiding API keys (`GOOGLE_API_KEY`) and transforming raw data before it reaches the client.
+- **Smart Caching**: Implements server-side caching (`node-cache`) to minimize API usage and reduce latency (1-hour TTL for weather, 1-year TTL for geo-data).
+- **Responsive Design**: Fully adaptive UI using Angular Material and CSS Grid/Flexbox, optimized for mobile and desktop.
+- **Location Services**:
+  - Autocomplete search for cities.
+  - Browser Geolocation integration with reverse geocoding.
+  - Bookmark system for saving favorite locations (synced with LocalStorage).
 
-Weather Dashboard is a web application that allows users to:
+##  Application Gallery
 
-- Search for locations
-- View current weather conditions
-- Check weather forecasts
-- Track weather information for multiple locations
+| Bookmarks Management | About Project |
+|:--------------------:|:-------------:|
+| ![Bookmarks](public/bookmarks-preview.png) | ![About](public/about-preview.png) |
+| *Manage your favorite locations* | *Project info & Team* |
 
-## Technologies
+##  Tech Stack
 
-- Angular 20.3.0
-- Angular Material 20.2.12
-- RxJS 7.8.0
-- TypeScript 5.9.2
+**Frontend:**
+- **Framework**: Angular 20.3.0
+- **State Management**: Angular Signals
+- **UI Library**: Angular Material 20.2.12
+- **Networking**: Angular HTTP Client (with RxJS Interceptors)
+- **Styles**: SCSS with CSS Variables for theming (Light/Dark/System modes)
 
-## Project Structure
+**Backend-for-Frontend (BFF):**
+- **Runtime**: Node.js
+- **Framework**: Express.js
+- **Utils**: `node-fetch` (v2), `node-cache`, `dotenv`
+
+##  Architecture
+
+This project uses a BFF pattern to ensure security and performance:
+
+1. **Client (Angular)** requests data from its own domain (`/api/weather`, `/api/places`).
+2. **BFF (Express)** checks the internal cache.
+3. If cached, returns data instantly.
+4. If not, requests data from **Google Weather/Places API** securely injecting credentials.
+5. **BFF** transforms the complex Google response into a lightweight, type-safe DTO (`DailyForecast`) for the client.
+
+##  Project Structure
 
 ```text
 src/
 ├── app/
 │   ├── core/
-│   │   ├── interceptors/     # HTTP interceptors for API key handling
-│   │   ├── models/          # Data models and interfaces
-│   │   └── services/        # Core services for weather and places
-│   └── features/
-│       ├── location-search/  # Location search functionality
-│       └── weather-forecast/ # Weather forecast display
-└── environments/            # Environment configuration files
+│   │   ├── models/          # Clean TypeScript interfaces (DTOs)
+│   │   └── services/        # Singleton services (Weather, Places, Bookmarks, Theme)
+│   ├── features/
+│   │   ├── about/           # "About Us" & Project Info modal
+│   │   ├── bookmarks/       # Saved locations management list
+│   │   ├── clock/           # Real-time clock component with DatePipe
+│   │   ├── location-search/ # Autocomplete & Geolocation logic
+│   │   ├── theme-toggle/    # Color scheme & Dark mode switcher
+│   │   └── weather-forecast/# Main dashboard with Signals-based UI
+│   └── shared/
+│       └── pipes/           # Utilities (e.g., WeatherIconPipe)
+├── bff-server/              # Node.js Express Server
+│   ├── index.js             # Server entry point & Caching logic
+│   └── places-controller.js # Reverse geocoding logic
+└── environments/            # Environment configuration
 ```
 
 ## Getting Started
@@ -73,7 +106,16 @@ src/
 
 ### Development Server
 
-Run `npm start` or `ng serve` for a development server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+To run the full application, you need to start both the Backend and the Frontend:
+
+1. **Start the BFF Server** (in one terminal):
+   ```bash
+   node bff-server/index.js
+
+2. **Start the Angular App** (in a second terminal):
+    npm start
+
+Navigate to http://localhost:4200/. The application will automatically reload if you change any of the source files.
 
 ### Building the Project
 
@@ -82,14 +124,6 @@ Run `npm run build` or `ng build` to build the project. The build artifacts will
 ### Running Tests
 
 Run `npm test` or `ng test` to execute the unit tests via Karma.
-
-## Features
-
-- Location-based weather search
-- Current weather conditions display
-- Weather forecast visualization
-- Responsive design using Angular Material
-- API key protection using HTTP interceptors
 
 ## License
 
