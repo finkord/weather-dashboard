@@ -1,18 +1,19 @@
-import { AsyncPipe, CommonModule, DatePipe, DecimalPipe } from '@angular/common';
+import { AsyncPipe, CommonModule, DatePipe, DecimalPipe } from '@angular/common'; // Прибрали JsonPipe
 import { Component, computed, inject, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatButtonModule } from '@angular/material/button'; // Додаємо кнопку
+import { MatButtonModule } from '@angular/material/button';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, startWith, switchMap, tap } from 'rxjs/operators';
 import {
-  DailyForecast, 
+  DailyForecast,
   GoogleDate,
 } from '../../core/models/weather.models';
 import { WeatherService } from '../../core/services/weather.service';
+import { BookmarksService } from '../../core/services/bookmarks.service';
 import { WeatherIconPipe } from '../../shared/pipes/weather-icon.pipe';
 
 interface ForecastState {
@@ -29,11 +30,12 @@ interface ForecastState {
     AsyncPipe,
     DatePipe,
     DecimalPipe,
+    // JsonPipe видалено звідси
     MatCardModule,
     MatProgressSpinnerModule,
     MatIconModule,
     MatDividerModule,
-    MatButtonModule, // Додано модуль кнопок
+    MatButtonModule,
     WeatherIconPipe,
   ],
   templateUrl: './weather-forecast.component.html',
@@ -42,10 +44,11 @@ interface ForecastState {
 })
 export class WeatherForecastComponent {
   private weatherService = inject(WeatherService);
+  public bookmarksService = inject(BookmarksService);
 
   // === СТАН ===
   public selectedForecastDay = signal<DailyForecast | null>(null);
-  
+
   // Пагінація
   public currentPage = signal(0);
   public readonly pageSize = 5;
@@ -54,12 +57,17 @@ export class WeatherForecastComponent {
     () => this.weatherService.selectedLocation()?.name
   );
 
+  public isCurrentLocationBookmarked = computed(() => {
+    const location = this.weatherService.selectedLocation();
+    if (!location) return false;
+    return this.bookmarksService.isBookmarked(location.name);
+  });
+
   public forecastState$: Observable<ForecastState> = toObservable(
     this.weatherService.selectedLocation
   ).pipe(
     filter((location) => !!location),
     tap(() => {
-      // Скидаємо пагінацію на першу сторінку при зміні міста
       this.currentPage.set(0);
     }),
     switchMap((location) =>
@@ -92,14 +100,21 @@ export class WeatherForecastComponent {
   public isSelected(day: DailyForecast): boolean {
     const selected = this.selectedForecastDay();
     if (!selected || !day) return false;
-    
+
     return day.date.year === selected.date.year &&
            day.date.month === selected.date.month &&
            day.date.day === selected.date.day;
   }
 
+  public toggleBookmark(): void {
+    const location = this.weatherService.selectedLocation();
+    if (location) {
+      this.bookmarksService.toggleBookmark(location.name, location.coords);
+    }
+  }
+
   // === МЕТОДИ ПАГІНАЦІЇ ===
-  
+
   public nextPage(totalItems: number): void {
     if ((this.currentPage() + 1) * this.pageSize < totalItems) {
       this.currentPage.update(page => page + 1);
@@ -111,10 +126,8 @@ export class WeatherForecastComponent {
       this.currentPage.update(page => page - 1);
     }
   }
-  
+
   public get totalPages(): number {
-    // Це не зовсім реактивно для шаблону без сигналу даних, 
-    // але оскільки ми використовуємо це всередині @if (state.data), це безпечно.
-    return 2; // 10 днів / 5 = 2 сторінки. Можна зробити динамічно: Math.ceil(total / pageSize)
+    return 2;
   }
 }

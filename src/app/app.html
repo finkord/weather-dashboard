@@ -1,18 +1,36 @@
-<header class="app-header">
-  <div class="container app-header-content">
-    <h1>{{ title() }}</h1>
-    <div style="display: flex; align-items: center; gap: 16px;">
-      <app-clock></app-clock>
-      <app-theme-toggle></app-theme-toggle>
-    </div>
-  </div>
-</header>
+<mat-drawer-container class="app-container" autosize>
+  
+  <mat-drawer #drawer mode="over" position="end" class="app-sidebar">
+    <app-bookmarks-list 
+      (locationSelected)="drawer.close()" 
+      (close)="drawer.close()">
+    </app-bookmarks-list>
+  </mat-drawer>
 
-<main class="container">
-  <app-location-search></app-location-search>
+  <mat-drawer-content>
+    
+    <header class="app-header">
+      <div class="container app-header-content">
+        <h1>{{ title() }}</h1>
+        
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <app-clock></app-clock>
+          <app-theme-toggle></app-theme-toggle>
+          
+          <button mat-icon-button (click)="drawer.toggle()" aria-label="Bookmarks">
+            <mat-icon>bookmarks</mat-icon>
+          </button>
+        </div>
+      </div>
+    </header>
 
-  <app-weather-forecast></app-weather-forecast>
+    <main class="container">
+      <app-location-search></app-location-search>
+      <app-weather-forecast></app-weather-forecast>
+    </main>
 
-</main>
+    <router-outlet />
+    
+  </mat-drawer-content>
 
-<router-outlet />
+</mat-drawer-container>

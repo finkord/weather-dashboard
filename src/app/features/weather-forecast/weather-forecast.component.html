@@ -1,117 +1,113 @@
 @if (forecastState$ | async; as state) {
   @switch (state.status) {
     @case ('initial') {
-      <div class="forecast-prompt">
+      <div class="forecast-prompt full-height-center">
         <mat-icon class="prompt-icon">location_on</mat-icon>
-        <p>Please select a city to view the forecast</p>
+        <p>Select a city to start</p>
       </div>
     }
 
     @case ('loading') {
-      <div class="forecast-loading">
+      <div class="forecast-loading full-height-center">
         <mat-spinner diameter="40"></mat-spinner>
-        <p>Loading data...</p>
       </div>
     }
 
     @case ('error') {
-      <div class="forecast-error">
+      <div class="forecast-error full-height-center">
         <mat-icon color="warn">error_outline</mat-icon>
-        <p>Failed to load weather data</p>
-        <pre>{{ state.error | json }}</pre>
+        <p>Error loading data</p>
       </div>
     }
 
     @case ('success') {
       @if (state.data && state.data.length > 0) {
-        <div class="forecast-container">
-          <h2>Forecast for {{ selectedLocationName() }}</h2>
-
-          @if (selectedForecastDay(); as current) {
-            <mat-card class="current-weather-card">
-              <mat-card-content>
-                <div class="current-main">
-                  <div class="current-info">
-                    <span class="today-label">
-                        {{ isSelected(state.data[0]) ? 'TODAY' : 'FORECAST FOR' }},
-                        {{ getJsDate(current.date) | date:'MMMM d' }}
-                    </span>
-                    
-                    <div class="temperature-large">
-                      {{ current.tempMax | number:'1.0-0' }}°
-                    </div>
-                    <div class="condition-text">{{ current.description }}</div>
-                  </div>
-                  
-                  <mat-icon class="weather-icon-large">
-                    {{ current.iconType | weatherIcon }}
-                  </mat-icon>
-                </div>
-
-                <mat-divider></mat-divider>
-
-                <div class="current-details">
-                  <div class="detail-item">
-                    <mat-icon>water_drop</mat-icon>
-                    <span>Precipitation: {{ current.precipitationChance }}%</span>
-                  </div>
-                  <div class="detail-item">
-                    <mat-icon>air</mat-icon>
-                    <span>Wind: {{ current.windSpeed | number:'1.0-1' }} kph</span>
-                  </div>
-                  <div class="detail-item">
-                    <mat-icon>thermostat</mat-icon>
-                    <span>Min: {{ current.tempMin | number:'1.0-0' }}°</span>
-                  </div>
-                </div>
-              </mat-card-content>
-            </mat-card>
-          }
+        <div class="dashboard-layout">
           
-          <div class="grid-header">
-            <h3>Select a Day ({{ state.data.length }} Days)</h3>
-            
-            <div class="pagination-controls">
-              <button mat-icon-button (click)="prevPage()" [disabled]="currentPage() === 0">
-                <mat-icon>chevron_left</mat-icon>
-              </button>
-              
-              <span class="page-indicator">
-                {{ currentPage() + 1 }} / {{ state.data.length / pageSize }}
-              </span>
-              
-              <button mat-icon-button (click)="nextPage(state.data.length)" [disabled]="(currentPage() + 1) * pageSize >= state.data.length">
-                <mat-icon>chevron_right</mat-icon>
+          <div class="dashboard-header">
+            <div class="title-group">
+              <h2>{{ selectedLocationName() }}</h2>
+              <button
+                mat-icon-button
+                class="favorite-btn"
+                (click)="toggleBookmark()"
+                [class.active]="isCurrentLocationBookmarked()"
+              >
+                <mat-icon>{{ isCurrentLocationBookmarked() ? 'favorite' : 'favorite_border' }}</mat-icon>
               </button>
             </div>
+            <span class="date-badge">
+                {{ getJsDate(selectedForecastDay()!.date) | date:'EEEE, d MMMM' }}
+            </span>
           </div>
-          
-          <div class="forecast-grid">
-            @for (day of state.data | slice:(currentPage() * pageSize):((currentPage() + 1) * pageSize); track day.date.day) {
-              <mat-card 
-                class="forecast-mini-card"
-                [class.selected]="isSelected(day)"
-                (click)="selectDay(day)"
-              >
-                <div class="day-name">
-                    {{ 
-                      (day.date.day === state.data[0].date.day && day.date.month === state.data[0].date.month) 
-                      ? 'Today' 
-                      : (getJsDate(day.date) | date:'EEE') 
-                    }}
+
+          @if (selectedForecastDay(); as current) {
+            <mat-card class="main-weather-card">
+              <div class="card-horizontal-layout">
+                
+                <div class="section-temp">
+                  <div class="temp-value">{{ current.tempMax | number:'1.0-0' }}°</div>
+                  <div class="weather-desc">{{ current.description }}</div>
+                </div>
+
+                <div class="section-icon">
+                  <mat-icon class="big-icon">{{ current.iconType | weatherIcon }}</mat-icon>
+                </div>
+
+                <div class="section-details">
+                  <div class="detail-row">
+                    <mat-icon>water_drop</mat-icon>
+                    <span>{{ current.precipitationChance }}% Rain</span>
+                  </div>
+                  <div class="detail-row">
+                    <mat-icon>air</mat-icon>
+                    <span>{{ current.windSpeed | number:'1.0-0' }} km/h</span>
+                  </div>
+                  <div class="detail-row">
+                    <mat-icon>thermostat</mat-icon>
+                    <span>Low: {{ current.tempMin | number:'1.0-0' }}°</span>
+                  </div>
                 </div>
                 
-                <mat-icon class="weather-icon-small">
-                  {{ day.iconType | weatherIcon }}
-                </mat-icon>
+              </div>
+            </mat-card>
+          }
 
-                <div class="temp-range">
-                  <span class="max">{{ day.tempMax | number:'1.0-0' }}°</span>
-                  <span class="min">{{ day.tempMin | number:'1.0-0' }}°</span>
+          <div class="forecast-section">
+            <div class="section-header">
+              <h3>10-Day Outlook</h3>
+              <div class="pagination-controls">
+                <button mat-icon-button (click)="prevPage()" [disabled]="currentPage() === 0">
+                  <mat-icon>chevron_left</mat-icon>
+                </button>
+                <span class="page-dots">
+                   <span class="dot" [class.active]="currentPage() === 0"></span>
+                   <span class="dot" [class.active]="currentPage() === 1"></span>
+                </span>
+                <button mat-icon-button (click)="nextPage(state.data.length)" [disabled]="(currentPage() + 1) * pageSize >= state.data.length">
+                  <mat-icon>chevron_right</mat-icon>
+                </button>
+              </div>
+            </div>
+            
+            <div class="forecast-grid">
+              @for (day of state.data | slice:(currentPage() * pageSize):((currentPage() + 1) * pageSize); track day.date.day) {
+                <div 
+                  class="forecast-item"
+                  [class.selected]="isSelected(day)"
+                  (click)="selectDay(day)"
+                >
+                  <span class="day-name">{{ getJsDate(day.date) | date:'EEE' }}</span>
+                  <mat-icon class="day-icon">{{ day.iconType | weatherIcon }}</mat-icon>
+                  <div class="day-temp">
+                    <span class="max">{{ day.tempMax | number:'1.0-0' }}°</span>
+                    <span class="min">{{ day.tempMin | number:'1.0-0' }}°</span>
+                  </div>
                 </div>
-              </mat-card>
-            }
+              }
+            </div>
           </div>
+
         </div>
       }
     }
