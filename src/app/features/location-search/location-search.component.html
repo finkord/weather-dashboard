@@ -1,7 +1,6 @@
-<mat-form-field class="location-search-field" appearance="outline">
-    <mat-icon matPrefix>search</mat-icon>
-    <mat-label>Пошук міста...</mat-label>
-    <input type="text" placeholder="Введіть назву міста" matInput [formControl]="searchControl"
+<mat-form-field class="location-search-field">
+    <mat-label>City search...</mat-label>
+    <input type="text" placeholder="Enter city name" matInput [formControl]="searchControl"
         [matAutocomplete]="auto" />
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayFn">
         @for (suggestion of suggestions$ | async; track suggestion.place_id) {

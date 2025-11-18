@@ -1,18 +1,44 @@
-<header class="app-header">
-  <div class="container app-header-content">
-    <h1>{{ title() }}</h1>
-    <div style="display: flex; align-items: center; gap: 16px;">
-      <app-clock></app-clock>
-      <app-theme-toggle></app-theme-toggle>
-    </div>
-  </div>
-</header>
+<mat-drawer-container class="app-container" autosize>
+  
+  <mat-drawer #aboutDrawer mode="over" position="end" class="app-sidebar">
+    <app-about (close)="aboutDrawer.close()"></app-about>
+  </mat-drawer>
 
-<main class="container">
-  <app-location-search></app-location-search>
+  <mat-drawer #bookmarksDrawer mode="over" position="end" class="app-sidebar">
+    <app-bookmarks-list 
+      (locationSelected)="bookmarksDrawer.close()" 
+      (close)="bookmarksDrawer.close()">
+    </app-bookmarks-list>
+  </mat-drawer>
 
-  <app-weather-forecast></app-weather-forecast>
+  <mat-drawer-content>
+    
+    <header class="app-header">
+      <div class="container app-header-content">
+        <h1>{{ title() }}</h1>
+        
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <app-clock></app-clock>
+          <app-theme-toggle></app-theme-toggle>
+          
+          <button mat-icon-button (click)="aboutDrawer.toggle()" aria-label="About">
+            <mat-icon>info</mat-icon>
+          </button>
 
-</main>
+          <button mat-icon-button (click)="bookmarksDrawer.toggle()" aria-label="Bookmarks">
+            <mat-icon>bookmarks</mat-icon>
+          </button>
+        </div>
+      </div>
+    </header>
 
-<router-outlet />
+    <main class="container">
+      <app-location-search></app-location-search>
+      <app-weather-forecast></app-weather-forecast>
+    </main>
+
+    <router-outlet />
+    
+  </mat-drawer-content>
+
+</mat-drawer-container>
