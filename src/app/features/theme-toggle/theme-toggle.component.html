@@ -2,7 +2,44 @@
     <mat-icon>palette</mat-icon>
 </button>
 
-<mat-menu #mainMenu="matMenu">
+<mat-menu #mainMenu="matMenu" class="theme-menu">
+    <div class="menu-section">
+        <span class="section-title">Режим</span>
+        <div class="mode-toggle-group">
+            <button mat-icon-button (click)="setMode('light')" [class.active]="themeService.themeMode() === 'light'"
+                matTooltip="Світла">
+                <mat-icon>light_mode</mat-icon>
+            </button>
+            <button mat-icon-button (click)="setMode('system')" [class.active]="themeService.themeMode() === 'system'"
+                matTooltip="Системна">
+                <mat-icon>brightness_auto</mat-icon>
+            </button>
+            <button mat-icon-button (click)="setMode('dark')" [class.active]="themeService.themeMode() === 'dark'"
+                matTooltip="Темна">
+                <mat-icon>dark_mode</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="menu-section">
+        <span class="section-title">Колір теми</span>
+        <div class="color-grid">
+            @for (color of availableColors; track color.name) {
+            <button class="color-swatch" [style.background-color]="color.hex"
+                [class.selected]="themeService.colorTheme() === color.name" (click)="setColor(color.name)"
+                [matTooltip]="color.label">
+                @if (themeService.colorTheme() === color.name) {
+                <mat-icon>check</mat-icon>
+                }
+            </button>
+            }
+        </div>
+    </div>
+</mat-menu>
+
+<!-- <mat-menu #mainMenu="matMenu">
     <button mat-menu-item [matMenuTriggerFor]="modeMenu">
         <mat-icon>{{ currentModeIcon() }}</mat-icon>
         <span>Режим: {{ currentModeLabel() }}</span>
@@ -39,4 +76,4 @@
     <button mat-menu-item (click)="setColor('orange')">
         <mat-icon style="color: #f97316">circle</mat-icon> Orange
     </button>
-</mat-menu>
+</mat-menu> -->

@@ -1,29 +1,39 @@
-// src/app/features/theme-toggle/theme-toggle.component.ts
-
-import { Component, inject } from '@angular/core';
-import { CommonModule, TitleCasePipe } from '@angular/common'; //
-import { MatButtonModule } from '@angular/material/button'; //
-import { MatIconModule } from '@angular/material/icon'; //
-import { MatMenuModule } from '@angular/material/menu'; //
-import { ThemeService, ThemeMode, ColorTheme } from '../../core/services/theme.service'; //
+import { Component, ViewChild, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDividerModule } from '@angular/material/divider';
+import { ThemeService, ThemeMode, ColorTheme } from '../../core/services/theme.service';
 
 @Component({
   selector: 'app-theme-toggle',
   standalone: true,
   imports: [
-    CommonModule, 
-    MatButtonModule, 
-    MatIconModule, 
+    CommonModule,
+    MatButtonModule,
+    MatIconModule,
     MatMenuModule,
-    TitleCasePipe // Додано TitleCasePipe, оскільки він використовується в шаблоні
+    MatTooltipModule,
+    MatDividerModule
   ],
-  // !!! ЗМІНА ТУТ: Використовуємо templateUrl замість inline template !!!
-  templateUrl: './theme-toggle.component.html', 
+  templateUrl: './theme-toggle.component.html',
+  styleUrls: ['./theme-toggle.component.scss'] // виправлено
 })
 export class ThemeToggleComponent {
-  public themeService = inject(ThemeService); //
+  public themeService = inject(ThemeService);
 
-  public currentModeIcon = () => { //
+  @ViewChild(MatMenuTrigger) menuTrigger!: MatMenuTrigger;
+
+  public availableColors: { name: ColorTheme; hex: string; label: string }[] = [
+    { name: 'azure', hex: '#3b82f6', label: 'Azure (Стандарт)' },
+    { name: 'magenta', hex: '#d946ef', label: 'Magenta' },
+    { name: 'green', hex: '#22c55e', label: 'Green' },
+    { name: 'orange', hex: '#f97316', label: 'Orange' },
+  ];
+
+  public currentModeIcon = () => {
     switch (this.themeService.themeMode()) {
       case 'light': return 'light_mode';
       case 'dark': return 'dark_mode';
@@ -31,19 +41,25 @@ export class ThemeToggleComponent {
     }
   };
 
-  public currentModeLabel = () => { //
-     switch (this.themeService.themeMode()) {
+  public currentModeLabel = () => {
+    switch (this.themeService.themeMode()) {
       case 'light': return 'Світла';
       case 'dark': return 'Темна';
       default: return 'Авто';
     }
-  }
+  };
 
-  public setMode(mode: ThemeMode) { //
+  public setMode(mode: ThemeMode) {
     this.themeService.setMode(mode);
+    this.keepMenuOpen();
   }
 
-  public setColor(color: ColorTheme) { //
+  public setColor(color: ColorTheme) {
     this.themeService.setColor(color);
+    this.keepMenuOpen();
+  }
+
+  private keepMenuOpen() {
+    setTimeout(() => this.menuTrigger.openMenu(), 0);
   }
 }
