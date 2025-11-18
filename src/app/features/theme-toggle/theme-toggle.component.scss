@@ -1,0 +1,61 @@
+.menu-section {
+  padding: 12px 16px;
+}
+.section-title {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--mat-sys-on-surface-variant);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.mode-toggle-group {
+  display: flex;
+  justify-content: space-between;
+  background: var(--mat-sys-surface-container-highest);
+  border-radius: 24px;
+  padding: 4px;
+
+  button {
+    // Вкладеність для кнопок всередині .mode-toggle-group
+    &.active {
+      background-color: var(--mat-sys-surface);
+      color: var(--mat-sys-primary);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+  }
+}
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.color-swatch {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+  color: white; /* Колір позначки "галочка" */
+  padding: 0;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &.selected {
+    border-color: var(--mat-sys-on-surface);
+  }
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  }
+}
