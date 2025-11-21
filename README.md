@@ -4,11 +4,12 @@ A production-ready, responsive weather application engineered with **Angular 20*
 
 ![Main Dashboard](public/preview.png)
 
-##  Team
+## Team
+
 - Volodymyr Fufalko - Full Stack Developer
 - Viktoriia Yakivchuk - Frontend Developer
 
-##  Key Features
+## Key Features
 
 - **Modern Angular Architecture**: Built with the latest **Signals API**, **Control Flow** syntax (`@if`, `@for`), and Standalone Components.
 - **Secure BFF Layer**: A Node.js/Express intermediate server handles external API calls, securely hiding API keys (`GOOGLE_API_KEY`) and transforming raw data before it reaches the client.
@@ -19,16 +20,17 @@ A production-ready, responsive weather application engineered with **Angular 20*
   - Browser Geolocation integration with reverse geocoding.
   - Bookmark system for saving favorite locations (synced with LocalStorage).
 
-##  Application Gallery
+## Application Gallery
 
 | Bookmarks Management | About Project |
 |:--------------------:|:-------------:|
 | ![Bookmarks](public/bookmarks-preview.png) | ![About](public/about-preview.png) |
 | *Manage your favorite locations* | *Project info & Team* |
 
-##  Tech Stack
+## Tech Stack
 
 **Frontend:**
+
 - **Framework**: Angular 20.3.0
 - **State Management**: Angular Signals
 - **UI Library**: Angular Material 20.2.12
@@ -36,11 +38,12 @@ A production-ready, responsive weather application engineered with **Angular 20*
 - **Styles**: SCSS with CSS Variables for theming (Light/Dark/System modes)
 
 **Backend-for-Frontend (BFF):**
+
 - **Runtime**: Node.js
 - **Framework**: Express.js
 - **Utils**: `node-fetch` (v2), `node-cache`, `dotenv`
 
-##  Architecture
+## Architecture
 
 This project uses a BFF pattern to ensure security and performance:
 
@@ -50,7 +53,7 @@ This project uses a BFF pattern to ensure security and performance:
 4. If not, requests data from **Google Weather/Places API** securely injecting credentials.
 5. **BFF** transforms the complex Google response into a lightweight, type-safe DTO (`DailyForecast`) for the client.
 
-##  Project Structure
+## Project Structure
 
 ```text
 src/
@@ -109,13 +112,15 @@ src/
 To run the full application, you need to start both the Backend and the Frontend:
 
 1. **Start the BFF Server** (in one terminal):
+
    ```bash
    node bff-server/index.js
 
 2. **Start the Angular App** (in a second terminal):
+
     npm start
 
-Navigate to http://localhost:4200/. The application will automatically reload if you change any of the source files.
+Navigate to ```http://localhost:4200/```. The application will automatically reload if you change any of the source files.
 
 ### Building the Project
 
