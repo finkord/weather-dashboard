@@ -1,0 +1,8 @@
+<div class="clock-display">
+  <span class="current-time">
+    {{ currentTime() | date: 'HH:mm:ss' }}
+  </span>
+  <span class="current-date">
+    {{ currentTime() | date: 'EEE, d MMM y' }}
+  </span>
+</div>

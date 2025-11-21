@@ -1,0 +1,134 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  
+  /* ВИПРАВЛЕНО: Використовуємо тільки змінну теми, без фіксованого fallback */
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  
+  box-sizing: border-box;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Плавна зміна теми */
+}
+
+.bookmarks-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 8px 12px 24px;
+  
+  /* Використовуємо системний колір для рамки */
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  background-color: inherit;
+  
+  h3 { 
+    margin: 0; 
+    font-weight: 500;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.9;
+    color: var(--mat-sys-on-surface);
+  }
+
+  button {
+    color: var(--mat-sys-on-surface-variant);
+    &:hover { 
+      color: var(--mat-sys-on-surface); 
+      /* Напівпрозорий фон на основі кольору тексту поточної теми */
+      background-color: rgba(var(--mat-sys-on-surface-rgb), 0.08); 
+    }
+  }
+}
+
+.bookmarks-content {
+  flex-grow: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 8px 0;
+}
+
+.bookmark-item-wrapper {
+  .bookmark-item {
+    height: 52px !important;
+    min-height: 52px !important;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin: 2px 8px;
+    border-radius: 8px;
+    
+    /* Колір тексту для елемента */
+    color: var(--mat-sys-on-surface);
+
+    &:hover {
+      /* Системний колір для ховера (працює і в темній, і в світлій темі) */
+      background-color: var(--mat-sys-surface-container-high);
+      
+      .delete-btn { opacity: 1; visibility: visible; }
+    }
+
+    .location-icon {
+      color: var(--mat-sys-primary);
+      margin-right: 12px;
+      font-size: 22px;
+      width: 22px;
+      height: 22px;
+    }
+    
+    .city-name {
+      font-weight: 400;
+      font-size: 0.95rem;
+    }
+  }
+
+  mat-divider {
+    margin: 0 16px;
+    border-color: var(--mat-sys-outline-variant);
+    opacity: 0.3;
+  }
+}
+
+.delete-btn {
+  color: var(--mat-sys-outline);
+  opacity: 0;
+  transition: all 0.2s;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+  
+  &:hover { 
+    color: var(--mat-sys-error); 
+    background-color: var(--mat-sys-error-container);
+    opacity: 1;
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--mat-sys-on-surface-variant);
+  opacity: 0.7;
+
+  .empty-icon {
+    font-size: 48px; width: 48px; height: 48px;
+    margin-bottom: 12px;
+    opacity: 0.5;
+    color: var(--mat-sys-secondary);
+  }
+
+  p { margin: 0; font-size: 1rem; font-weight: 500; }
+  span { font-size: 0.8rem; margin-top: 4px; }
+}

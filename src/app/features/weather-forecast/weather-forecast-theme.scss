@@ -1,0 +1,27 @@
+@use '@angular/material' as mat;
+
+@mixin weather-forecast-theme($theme) {
+  // Отримуємо конфігурацію кольорів з теми
+  $color-config: mat.get-color-config($theme);
+  $primary: map-get($color-config, 'primary');
+  $accent: map-get($color-config, 'accent');
+  $background: map-get($color-config, 'background');
+  $foreground: map-get($color-config, 'foreground');
+
+  app-weather-forecast {
+    .forecast-card {
+      // Використовуємо колір фону з палітри Material
+      background-color: mat.get-color-from-palette($background, 'card');
+      color: mat.get-color-from-palette($foreground, 'text');
+      
+      &.highlighted {
+        // Використовуємо primary колір
+        border: 2px solid mat.get-color-from-palette($primary, default);
+      }
+    }
+
+    .temperature-value {
+       color: mat.get-color-from-palette($accent, default);
+    }
+  }
+}

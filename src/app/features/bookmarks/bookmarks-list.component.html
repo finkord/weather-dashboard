@@ -1,0 +1,33 @@
+<div class="bookmarks-header">
+  <h3>Saved Locations</h3>
+  <button mat-icon-button (click)="close.emit()" aria-label="Close">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div class="bookmarks-content">
+  <mat-nav-list>
+    @for (item of bookmarksService.bookmarks(); track item.name) {
+      <div class="bookmark-item-wrapper">
+        <mat-list-item (click)="selectLocation(item)" class="bookmark-item">
+          <mat-icon matListItemIcon class="location-icon">place</mat-icon>
+          <span matListItemTitle class="city-name">{{ item.name }}</span>
+          
+          <button mat-icon-button matListItemMeta 
+                  (click)="$event.stopPropagation(); deleteBookmark(item.name)"
+                  class="delete-btn"
+                  aria-label="Remove location">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </div>
+    } @empty {
+      <div class="empty-state">
+        <mat-icon class="empty-icon">bookmark_border</mat-icon>
+        <p>No saved locations</p>
+        <span>Add cities using the heart icon</span>
+      </div>
+    }
+  </mat-nav-list>
+</div>

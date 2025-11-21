@@ -4,6 +4,8 @@ const fetch = require('node-fetch'); // (v2: npm install node-fetch@2)
 const cors = require('cors');
 const NodeCache = require('node-cache');
 
+const placesController = require('./places-controller');
+
 const app = express();
 const port = 3000;
 
@@ -204,6 +206,9 @@ app.get('/api/places/details', async (req, res) => {
     res.status(500).json({ message: 'Error fetching place details' });
   }
 });
+
+// 5. Ендпоінт для геолокації
+app.get('/api/places/reverse', placesController.reverseGeocode);
 
 app.listen(port, () => {
   console.log(`[BFF] Локальний "Розумний" BFF запущено на http://localhost:${port}`);
